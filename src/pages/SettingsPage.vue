@@ -61,6 +61,10 @@ const tab = ref("userSettings");
 </script>
 
 <style scoped>
+.gray-bg {
+  background: #e2e2e2;
+}
+
 .top-borders-rounded {
   border-radius: 10px 10px 0px 0px;
 }
@@ -73,6 +77,12 @@ const tab = ref("userSettings");
   overflow: hidden;
   height: 100%;
   padding-bottom: 0 !important;
+}
+
+.container {
+  background: rgb(226, 226, 226);
+  height: 100vh;
+  max-height: calc(100vh - 50px);
 }
 
 </style>
