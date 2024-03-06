@@ -10,7 +10,7 @@
     class="bg-primary text-white"
   >
   <q-list>
-    <q-item active-class="q-item-no-link-highlighting">
+    <q-item to="/users" active-class="q-item-no-link-highlighting">
       <q-item-section avatar>
         <q-icon name="person"/>
       </q-item-section>

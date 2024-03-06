@@ -78,9 +78,14 @@ const routes = [
             path: "/customer-settings",
             name: "customer-settings",
             component: () => import("src/components/tabs/DistiributorSettingsTab.vue")
-          }
+          },
         ]
-      }
+      },
+      {
+        path: "/users",
+        name: "users",
+        component: () => import("src/pages/UsersPage.vue")
+      },
     ]
   },
   {
