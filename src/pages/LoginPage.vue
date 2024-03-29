@@ -2,29 +2,22 @@
   <q-layout>
     <q-page-container>
       <q-page class="flex bg-image flex-center">
-        <q-card v-bind:style="$q.screen.lt.sm?{'width': '80%'}:{'width':'30%'}">
+        <q-card
+          v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }"
+        >
           <q-card-section>
             <q-avatar size="103px" class="absolute-center shadow-10">
-              <img src="company_logo.jpg" alt="">
+              <img src="company_logo.jpg" alt="" />
             </q-avatar>
           </q-card-section>
           <q-card-section>
             <div class="text-center q-pt-lg">
-              <div class="col text-h6 ellipsis">
-                Log in
-              </div>
+              <div class="col text-h6 ellipsis">Log in</div>
             </div>
           </q-card-section>
           <q-card-section>
-            <q-form
-              class="q-gutter-md"
-            >
-              <q-input
-                filled
-                v-model="username"
-                label="Username"
-                lazy-rules
-              />
+            <q-form class="q-gutter-md">
+              <q-input filled v-model="username" label="Username" lazy-rules />
 
               <q-input
                 type="password"
@@ -32,11 +25,15 @@
                 v-model="password"
                 label="Password"
                 lazy-rules
-
               />
 
               <div class="row justify-center">
-                <q-btn label="Login" type="button" color="primary"/>
+                <q-btn
+                  label="Login"
+                  type="button"
+                  color="primary"
+                  @click="navigateToMainPage"
+                />
               </div>
             </q-form>
           </q-card-section>
@@ -47,12 +44,22 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+// Route Initialization
+const router = useRouter();
 
 // Variable Declarations
 const username = ref("");
 const password = ref("");
 
+// Functions
+const navigateToMainPage = () => {
+  router.push({
+    name: "main",
+  });
+};
 </script>
 
 <style scoped>

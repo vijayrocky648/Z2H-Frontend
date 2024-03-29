@@ -1,8 +1,8 @@
 {
-  "name": "Quasar Admin",
+  "name": "Zero To Hero",
   "version": "0.0.1",
-  "description": "Quasar Admin",
-  "productName": "Quasar Admin",
+  "description": "Zero To Hero",
+  "productName": "Zero To Hero",
   "author": "pratikpatelpp802@gmail.com",
   "private": true,
   "scripts": {
