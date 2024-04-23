@@ -25,7 +25,7 @@
                 <div class="row">
                   <div class="q-pt-md">
                     <span class="text-bold">
-                      Registration fee and Commission percentage on various levels
+                      Registration fee and Commission Amount on various levels
                     </span>
                     <q-img
                       style="width: 1.2rem"
@@ -56,12 +56,11 @@
                         <div class="row">
                           <div class="col-12 flex items-center justify-start q-pb-md">
                             <div style="min-width: 53px;">
-                              Level 1 (%)
+                              Level 1 commission Fee (₹)
                             </div>
                             <div style="max-width: 100px; max-height: 40px;" class="q-ml-lg">
                                 <q-input
-                                  v-model="levelOnePercentage"
-                                  outlined
+                                  v-model="levelOneCommissionFee"
                                   dense
                                   :rules="[
                                       val => (val !== null && val !== '' && parseInt(val)!=NaN)|| 'Please type a number',
@@ -76,12 +75,11 @@
                         <div class="row">
                           <div class="col-12 flex items-center justify-start q-pb-md">
                             <div style="min-width: 53px;">
-                              Level 2 (%)
+                              Level 2 commission Fee (₹)
                             </div>
                             <div style="max-width: 100px; max-height: 40px;" class="q-ml-lg">
                                 <q-input
-                                  v-model="levelTwoPercentage"
-                                  outlined
+                                  v-model="levelTwoCommissionFee"
                                   dense
                                   :rules="[
                                       val => (val !== null && val !== '' && parseInt(val)!=NaN)|| 'Please type a number',
@@ -96,12 +94,11 @@
                         <div class="row">
                           <div class="col-12 flex items-center justify-start q-pb-md">
                             <div style="min-width: 53px;">
-                              Level 3 (%)
+                              Level 3 commission Fee (₹)
                             </div>
                             <div style="max-width: 100px; max-height: 40px;" class="q-ml-lg">
                                 <q-input
-                                  v-model="levelThreePercentage"
-                                  outlined
+                                  v-model="levelThreeCommissionFee"
                                   dense
                                   :rules="[
                                       val => (val !== null && val !== '' && parseInt(val)!=NaN)|| 'Please type a number',
@@ -116,12 +113,11 @@
                         <div class="row">
                           <div class="col-12 flex items-center justify-start q-pb-md">
                             <div style="min-width: 53px;">
-                              Level 4 (%)
+                              Level 4 commission Fee (₹)
                             </div>
                             <div style="max-width: 100px; max-height: 40px;" class="q-ml-lg">
                                 <q-input
-                                  v-model="levelFourPercentage"
-                                  outlined
+                                  v-model="levelFourCommissionFee"
                                   dense
                                   :rules="[
                                       val => (val !== null && val !== '' && parseInt(val)!=NaN)|| 'Please type a number',
@@ -136,7 +132,7 @@
                         <div class="row">
                           <div class="col-12 flex items-center justify-start q-pb-md">
                             <div style="min-width: 53px;">
-                              Registration Fee (Rs.)
+                              Registration Fee (₹)
                             </div>
                             <div style="max-width: 100px; max-height: 40px;" class="q-ml-lg">
                                 <q-input
@@ -190,10 +186,10 @@ import customTooltip from "src/components/shared/CustomTooltip.vue";
 // Variable Initialization
 const planPackage = ref("Silver");
 const planPackageOptions = ref(['Silver', 'Gold', 'Platinum', 'Emerald', 'Diamond'])
-const levelOnePercentage = ref(10);
-const levelTwoPercentage = ref(20);
-const levelThreePercentage = ref(30);
-const levelFourPercentage = ref(40);
+const levelOneCommissionFee = ref(10);
+const levelTwoCommissionFee = ref(20);
+const levelThreeCommissionFee = ref(30);
+const levelFourCommissionFee = ref(40);
 const registrationFee = ref(500);
 const customerSettingsInfoContent = ref(`
   <div
@@ -214,13 +210,13 @@ const commissionPercentageInfo = ref(`
     class="text-center text-body2 text-white"
     style="border-bottom: 1px solid white; padding-bottom: 0.35rem"
   >
-    <b>Registration Fee & Commission %</b>
+    <b>Registration Fee & Commission Amount</b>
   </div>
   <div class="q-pl-md q-py-sm text-body2 text-white">
-    Commission Percentage for Independent distributors
+    Commission Amount for Independent distributors
     across the different levels (Level1, Level2, Level3 and Level4)
     with respect to different packages (Silver, Gold, Platinum, Emerald and Diamond).
-    Based on the percentage, the customer will get a commission percentage
+    The customer will get a commission percentage
     while reaching the target against levels.
   </div>
   <div class="q-pl-md q-py-sm text-body2 text-white">

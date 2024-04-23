@@ -139,11 +139,6 @@
                 maxlength="128"
                 :rules="[(val) => !!val.trim() || 'Field is required']"
               />
-              <!-- <q-uploader
-                    label="Aadhar File"
-                    auto-upload
-                    url=""
-                  /> -->
             </div>
           </q-card-section>
           <q-card-section>
@@ -171,7 +166,6 @@
                 maxlength="128"
                 :rules="[(val) => !!val.trim() || 'Field is required']"
               />
-              <!-- <q-uploader label="PAN File" auto-upload url="" /> -->
             </div>
           </q-card-section>
           <q-card-section>
@@ -221,6 +215,55 @@
                 maxlength="128"
                 :rules="[(val) => !!val.trim() || 'Field is required']"
               />
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <div class="text-bold">Other Details</div>
+            <div class="q-ml-lg q-mt-sm">
+              <div class="text-bold">Personal Email</div>
+              <q-input
+                v-model="personalEmail"
+                style="max-width: 400px"
+                outlined
+                dense
+                autofocus
+                placeholder="Enter an Email Address"
+                maxlength="128"
+                :rules="[(val) => !!val.trim() || 'Field is required']"
+              />
+              <div class="text-bold">Mobile Number</div>
+              <q-input
+                  v-model="mobileNumber"
+                  style="max-width: 400px"
+                  outlined
+                  dense
+                  autofocus
+                  placeholder="Enter a Mobile Number"
+                  maxlength="128"
+                  :rules="[(val) => !!val.trim() || 'Field is required']"
+                />
+                <div class="text-bold">Alternate Name (Father/Mother)</div>
+                <q-input
+                  v-model="alternateName"
+                  style="max-width: 400px"
+                  outlined
+                  dense
+                  autofocus
+                  placeholder="Enter an Alternate Name"
+                  maxlength="128"
+                  :rules="[(val) => !!val.trim() || 'Field is required']"
+                />
+                <div class="text-bold">Alternate Mobile Number</div>
+                <q-input
+                    v-model="alternateMobileNumber"
+                    style="max-width: 400px"
+                    outlined
+                    dense
+                    autofocus
+                    placeholder="Enter a Mobile Number"
+                    maxlength="128"
+                    :rules="[(val) => !!val.trim() || 'Field is required']"
+                  />
             </div>
           </q-card-section>
           <q-card-section>
@@ -303,6 +346,10 @@ const aadharName = ref("");
 const panNumber = ref("");
 const panName = ref("");
 const bankAccountNumber = ref("");
+const personalEmail = ref("");
+const mobileNumber = ref("");
+const alternateName = ref("");
+const alternateMobileNumber = ref("");
 const bankAccountName = ref("");
 const bankNameAndBranch = ref("");
 const bankIfscCode = ref("");
