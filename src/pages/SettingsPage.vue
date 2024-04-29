@@ -30,9 +30,7 @@
         transition-next="fade"
       >
         <q-tab-panel name="userSettings" class="q-pa-none">
-          <user-settings-tab
-            v-if="route.name === 'user-settings'"
-          />
+          <user-settings-tab v-if="route.name === 'user-settings'" />
         </q-tab-panel>
 
         <q-tab-panel name="customerSettings" class="q-pa-none">
@@ -43,12 +41,11 @@
       </q-tab-panels>
     </div>
   </div>
-
 </template>
 
 <script setup>
-import {ref} from "vue";
-import {useRoute} from "vue-router";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
 import UserSettingsTab from "src/components/tabs/UserSettingsTab.vue";
 import DistiributorSettingsTab from "src/components/tabs/DistiributorSettingsTab.vue";
 
@@ -57,7 +54,6 @@ const route = useRoute();
 
 // variable Initialization
 const tab = ref("userSettings");
-
 </script>
 
 <style scoped>
@@ -84,5 +80,4 @@ const tab = ref("userSettings");
   height: 100vh;
   max-height: calc(100vh - 50px);
 }
-
 </style>

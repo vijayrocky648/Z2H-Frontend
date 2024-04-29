@@ -16,24 +16,30 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <q-form class="q-gutter-md">
-              <q-input filled v-model="username" label="Username" lazy-rules />
+            <q-form class="q-gutter-md" @submit="validateUserLogin">
+              <q-input
+                autofocus
+                outlined
+                v-model="email"
+                bg-color="grey-3"
+                label="email"
+                type="email"
+                :rules="[(val) => !!val || 'Field is required']"
+                no-error-icon
+              />
 
               <q-input
                 type="password"
-                filled
+                outlined
                 v-model="password"
+                bg-color="grey-3"
                 label="Password"
-                lazy-rules
+                :rules="[(val) => !!val || 'Field is required']"
+                no-error-icon
               />
 
               <div class="row justify-center">
-                <q-btn
-                  label="Login"
-                  type="button"
-                  color="primary"
-                  @click="navigateToMainPage"
-                />
+                <q-btn label="Login" type="submit" color="primary" />
               </div>
             </q-form>
           </q-card-section>
@@ -45,20 +51,77 @@
 
 <script setup>
 import { ref } from "vue";
+import { useQuasar, QSpinnerGears } from "quasar";
 import { useRouter } from "vue-router";
+import { useUserStore } from "src/stores/user.js";
 
 // Route Initialization
 const router = useRouter();
 
+// Store Initialization
+const userStore = useUserStore();
+
 // Variable Declarations
-const username = ref("");
+const email = ref("");
 const password = ref("");
+const $q = useQuasar();
 
 // Functions
-const navigateToMainPage = () => {
-  router.push({
-    name: "main",
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerGears,
+    spinnerColor: "blue",
+    messageColor: "white",
+    backgroundColor: "blue",
+    message: "",
   });
+};
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
+const validateUserLogin = () => {
+  showLoader();
+  let payload = {
+    email: email.value,
+    password: password.value,
+    accessed_from: "web",
+  };
+  userStore
+    .userLoginWithPassword(payload)
+    .then((res) => {
+      let token = res.data.token;
+      userStore.token = token;
+      localStorage.setItem("token", token);
+      userStore.getUserInfo();
+      router.push({
+        name: "main",
+      });
+    })
+    .catch((err) => {
+      let errors = null;
+      let errorMessage = null;
+      let errorResponse = err.response?.data;
+      if (errorResponse?.non_field_errors) {
+        errors = errorResponse.non_field_errors;
+        errorMessage = errors[0];
+      } else if (errorResponse?.email) {
+        errors = errorResponse.email;
+        errorMessage = errors[0];
+      }
+
+      if (errorMessage) {
+        $q.notify({
+          message: errorMessage,
+          type: "negative",
+          position: "top",
+        });
+      }
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 </script>
 
