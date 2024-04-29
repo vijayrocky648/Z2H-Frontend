@@ -18,5 +18,9 @@ export const validateRoutes = (to, from, next) => {
     return next({ name: 'sign-in' });
   }
 
+  if (!to.name) {
+    return next({ name: 'sign-in' });
+  }
+
   next();
 };
