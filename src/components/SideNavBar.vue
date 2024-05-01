@@ -107,32 +107,32 @@ const userRole = computed(() => {
 });
 
 const showSettingsPage = computed(() => {
-  const requiredRoleToDisplayArray = ["superadmin"];
+  const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
 
 const showReportsPage = computed(() => {
-  const requiredRoleToDisplayArray = ["superadmin"];
+  const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
 
 const showCustomersPage = computed(() => {
-  const requiredRoleToDisplayArray = ["superadmin"];
+  const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
 
 const showOrdersPage = computed(() => {
-  const requiredRoleToDisplayArray = ["superadmin"];
+  const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
 
 const showProductsPage = computed(() => {
-  const requiredRoleToDisplayArray = ["superadmin"];
+  const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
 
 const showUsersPage = computed(() => {
-  const requiredRoleToDisplayArray = ["superadmin"];
+  const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
 </script>

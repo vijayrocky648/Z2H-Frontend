@@ -13,7 +13,7 @@ export const useUserStore = defineStore("user", {
       return api.post(url, payload)
     },
 
-    getUserInfo() {
+    async getUserInfo() {
       let url = '/api/z2h/user/info/';
       return api.get(url).then(res => {
         this.userInfo = res.data.user_info;

@@ -103,12 +103,15 @@ const validateUserLogin = () => {
       let errors = null;
       let errorMessage = null;
       let errorResponse = err.response?.data;
+
       if (errorResponse?.non_field_errors) {
         errors = errorResponse.non_field_errors;
         errorMessage = errors[0];
       } else if (errorResponse?.email) {
         errors = errorResponse.email;
         errorMessage = errors[0];
+      } else if (!errorResponse) {
+        errorMessage = "Something went Wrong. Please contact your admin!!!";
       }
 
       if (errorMessage) {
