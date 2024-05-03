@@ -77,6 +77,19 @@
           <q-item-label>Settings</q-item-label>
         </q-item-section>
       </q-item>
+
+      <q-item
+        to="/sign-in"
+        active-class="q-item-no-link-highlighting"
+        @click="logout"
+      >
+        <q-item-section avatar>
+          <q-icon name="person" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Logout</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
   </q-drawer>
 </template>
@@ -135,4 +148,9 @@ const showUsersPage = computed(() => {
   const requiredRoleToDisplayArray = ["Superadmin"];
   return requiredRoleToDisplayArray.includes(userRole.value);
 });
+
+// Methods
+const logout = () => {
+  userStore.logoutUser();
+};
 </script>

@@ -18,6 +18,15 @@ export const useUserStore = defineStore("user", {
       return api.get(url).then(res => {
         this.userInfo = res.data.user_info;
       })
-    }
+    },
+
+    async logoutUser() {
+      let url = '/api/z2h/user/logout/';
+      return api.post(url).then(res => {
+        localStorage.removeItem("token");
+        this.token = null;
+        this.userInfo = undefined;
+      })
+    },
   },
 });
