@@ -221,6 +221,7 @@
               label="Save"
               class="q-ml-md"
               :disable="validateSave"
+              @click="updateCustomerSettings"
             />
           </div>
         </div>
@@ -291,6 +292,13 @@ const planPackageOptions = computed(() => {
   return planDetails.value.map((plan) => plan.name);
 });
 
+const planPackageUid = computed(() => {
+  let requiredPlan = planDetails.value.find(
+    (plan) => plan.name === planPackage.value
+  );
+  return requiredPlan.uid;
+});
+
 const validateSave = computed(() => {
   let isNoValueEntered =
     !levelOneCommissionFee.value ||
@@ -347,6 +355,34 @@ const updatePlanPackageDetails = () => {
   levelThreeCommissionFee.value = parseFloat(requiredPlan.level_three_amount);
   levelFourCommissionFee.value = parseFloat(requiredPlan.level_four_amount);
   registrationFee.value = parseFloat(requiredPlan.registration_fee);
+};
+
+const updateCustomerSettings = () => {
+  let payload = {
+    level_one_amount: levelOneCommissionFee.value,
+    level_two_amount: levelTwoCommissionFee.value,
+    level_three_amount: levelThreeCommissionFee.value,
+    level_four_amount: levelFourCommissionFee.value,
+    registration_fee: registrationFee.value,
+  };
+
+  generalStore
+    .updateCustomerSettings(payload, planPackageUid.value)
+    .then((res) => {
+      generalStore.getAppPlanDetails();
+      $q.notify({
+        message: "Customer Settings Updated Successfully!!!",
+        type: "positive",
+        position: "top",
+      });
+    })
+    .catch((err) => {
+      $q.notify({
+        message: "Something went Wrong. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    });
 };
 
 // Lifecycle Hooks

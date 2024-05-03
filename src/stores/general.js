@@ -33,6 +33,11 @@ export const useGeneralStore = defineStore("general", {
       return await api.get(url).then((res) => {
         this.planDetails = res.data;
       });
-    }
+    },
+
+    updateCustomerSettings(payload, planDetailUid) {
+      let url = `/api/z2h/app/plan_details/${planDetailUid}/`;
+      return api.patch(url, payload);
+    },
   }
 })
