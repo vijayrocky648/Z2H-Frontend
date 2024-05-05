@@ -232,7 +232,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
-import { useQuasar } from "quasar";
+import { useQuasar, QSpinnerGears } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import { storeToRefs } from "pinia";
 import infoCircleIcon from "src/assets/icons/info-circle.svg";
@@ -346,6 +346,20 @@ watch(planPackage, (value) => {
 });
 
 // Functions
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerGears,
+    spinnerColor: "blue",
+    messageColor: "white",
+    backgroundColor: "blue",
+    message: "",
+  });
+};
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
 const updatePlanPackageDetails = () => {
   let requiredPlan = planDetails.value.find(
     (plan) => plan.name === planPackage.value
@@ -358,6 +372,8 @@ const updatePlanPackageDetails = () => {
 };
 
 const updateCustomerSettings = () => {
+  showLoader();
+
   let payload = {
     level_one_amount: levelOneCommissionFee.value,
     level_two_amount: levelTwoCommissionFee.value,
@@ -382,6 +398,9 @@ const updateCustomerSettings = () => {
         type: "negative",
         position: "top",
       });
+    })
+    .finally(() => {
+      hideLoader();
     });
 };
 

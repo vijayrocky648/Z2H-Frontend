@@ -28,5 +28,15 @@ export const useUserStore = defineStore("user", {
         this.userInfo = undefined;
       })
     },
+
+    saveWebuser(payload) {
+      let url = '/api/z2h/user/web_user/';
+      return api.post(url, payload);
+    },
+
+    getWebUsersList() {
+      let url = '/api/z2h/user/web_user/';
+      return api.get(url);
+    },
   },
 });

@@ -169,7 +169,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import { useQuasar } from "quasar";
+import { useQuasar, QSpinnerGears } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import { storeToRefs } from "pinia";
 import infoCircleIcon from "src/assets/icons/info-circle.svg";
@@ -392,6 +392,20 @@ watch(systemRole, (value) => {
 });
 
 // Methods
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerGears,
+    spinnerColor: "blue",
+    messageColor: "white",
+    backgroundColor: "blue",
+    message: "",
+  });
+};
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
 const getSystemRoleUid = () => {
   let chosenSystemRole = userRoles.value.find(
     (role) => role.name == systemRole.value
@@ -445,6 +459,8 @@ const saveUserSettings = () => {
     return;
   }
 
+  showLoader();
+
   let data = {
     systemRoleUid: getSystemRoleUid(),
     users: usersPage.value,
@@ -473,6 +489,9 @@ const saveUserSettings = () => {
         type: "negative",
         position: "top",
       });
+    })
+    .finally(() => {
+      hideLoader();
     });
 };
 

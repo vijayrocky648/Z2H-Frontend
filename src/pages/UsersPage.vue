@@ -51,6 +51,7 @@
   </div>
 
   <create-new-user-modal
+    v-if="openNewUserPopup"
     v-model="openNewUserPopup"
     :show-new-user-popup="openNewUserPopup"
     :close-new-user-popup="closeNewUserPopup"
@@ -58,8 +59,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useUserStore } from "src/stores/user";
+import { storeToRefs } from "pinia";
 import createNewUserModal from "src/components/popups/createNewUserModal.vue";
+
+// Store Initialization
+const userStore = useUserStore();
 
 // Variable Initializations
 const openNewUserPopup = ref(false);
@@ -74,72 +80,40 @@ let columnsData = [
     format: (val) => `${val}`,
     sortable: true,
   },
-  { name: "dob", label: "Date of birth", field: "dob" },
+  { name: "dob", label: "Date of birth", field: "date_of_birth" },
   { name: "gender", label: "Gender", field: "gender", sortable: true },
-  { name: "aadharNumber", label: "AAdhar No.", field: "aadharNumber" },
+  { name: "aadharNumber", label: "AAdhar No.", field: "aadhar_number" },
   { name: "pan", label: "PAN", field: "pan" },
   {
     name: "bankAccountNumber",
     label: "Bank Account No",
-    field: "bankAccountNumber",
+    field: "account_number",
+  },
+  {
+    name: "bankName",
+    label: "Bank",
+    field: "name_of_bank",
   },
   {
     name: "systemRole",
     label: "System Role",
-    field: "systemRole",
+    field: "system_role",
     sortable: true,
   },
-];
-let rowsData = [
   {
-    name: "Ram Kumar",
-    dob: "24-03-1997",
-    gender: "Male",
-    aadharNumber: "123456789632",
-    pan: "CETTY9785K",
-    bankAccountNumber: "26487894512536",
-    systemRole: "Superadmin",
+    name: "systemEmail",
+    label: "System Email",
+    field: "system_email",
   },
   {
-    name: "Saran Raj",
-    dob: "05-05-1984",
-    gender: "Male",
-    aadharNumber: "326587412359",
-    pan: "DETTY9785K",
-    bankAccountNumber: "71487894512536",
-    systemRole: "Admin",
-  },
-  {
-    name: "Lavanya R",
-    dob: "01-05-1994",
-    gender: "Female",
-    aadharNumber: "874561234875",
-    pan: "FFTTY1284L",
-    bankAccountNumber: "51425874585441",
-    systemRole: "Telecaler",
-  },
-  {
-    name: "Janani V",
-    dob: "08-02-1995",
-    gender: "Female",
-    aadharNumber: "974561234875",
-    pan: "GFTTY1284L",
-    bankAccountNumber: "31225874585441",
-    systemRole: "Telecaler",
-  },
-  {
-    name: "Kartik",
-    dob: "02-09-1334",
-    gender: "Male",
-    aadharNumber: "874569321456",
-    pan: "GYTTY9785K",
-    bankAccountNumber: "84784512365447",
-    systemRole: "Admin",
+    name: "mobileNumber",
+    label: "Mobile Number",
+    field: "mobile_number",
   },
 ];
 
 const columns = ref(columnsData);
-const rows = ref(rowsData);
+const rows = ref([]);
 const selected = ref([]);
 const filter = ref("");
 const showFilter = ref(false);
@@ -148,4 +122,11 @@ const showFilter = ref(false);
 const closeNewUserPopup = () => {
   openNewUserPopup.value = false;
 };
+
+// Lifecycle Hooks
+onMounted(() => {
+  userStore.getWebUsersList().then((res) => {
+    rows.value = res.data;
+  });
+});
 </script>
