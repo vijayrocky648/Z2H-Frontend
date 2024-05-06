@@ -1,23 +1,9 @@
 <template>
-  <div class="q-px-md q-pt-md q-pb-xs float-right">
-    <q-btn
-      color="primary"
-      class="q-mb-md"
-      no-caps
-      @click="openNewUserPopup = true"
-    >
-      <div class="row justify-start items-center">
-        <q-icon name="add" />
-        <span class="q-ml-sm">New Web User</span>
-      </div>
-    </q-btn>
-  </div>
-
-  <div style="margin-top: 100px" class="q-ml-md q-mr-lg">
+  <div style="margin-top: 50px" class="q-ml-md q-mr-lg q-pa-md">
     <q-table
       flat
       bordered
-      title="Web Users"
+      title="Customers"
       :rows="rows"
       :columns="columns"
       row-key="name"
@@ -49,34 +35,23 @@
       </template>
     </q-table>
   </div>
-
-  <create-new-user-modal
-    v-if="openNewUserPopup"
-    v-model="openNewUserPopup"
-    :show-new-user-popup="openNewUserPopup"
-    :close-new-user-popup="closeNewUserPopup"
-  />
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { useQuasar, QSpinnerGears } from "quasar";
 import { useUserStore } from "src/stores/user";
-import { storeToRefs } from "pinia";
-import createNewUserModal from "src/components/popups/createNewUserModal.vue";
 
 // Store Initialization
 const userStore = useUserStore();
 
 // Variable Initializations
-const openNewUserPopup = ref(false);
 const $q = useQuasar();
-
 let columnsData = [
   {
     name: "name",
     required: true,
-    label: "Web user name",
+    label: "Customer name",
     align: "left",
     field: (row) => row.name,
     format: (val) => `${val}`,
@@ -84,33 +59,32 @@ let columnsData = [
   },
   { name: "dob", label: "Date of birth", field: "date_of_birth" },
   { name: "gender", label: "Gender", field: "gender", sortable: true },
-  { name: "aadharNumber", label: "AAdhar No.", field: "aadhar_number" },
-  { name: "pan", label: "PAN", field: "pan" },
-  {
-    name: "bankAccountNumber",
-    label: "Bank Account No",
-    field: "account_number",
-  },
-  {
-    name: "bankName",
-    label: "Bank",
-    field: "name_of_bank",
-  },
-  {
-    name: "systemRole",
-    label: "System Role",
-    field: "system_role",
-    sortable: true,
-  },
-  {
-    name: "systemEmail",
-    label: "System Email",
-    field: "system_email",
-  },
+  { name: "plan", label: "Plan Name", field: "plan" },
+  { name: "planStartDate", label: "Plan Start Date", field: "plan_start_date" },
   {
     name: "mobileNumber",
     label: "Mobile Number",
     field: "mobile_number",
+  },
+  {
+    name: "levelOneCount",
+    label: "Level One Count",
+    field: "level_one_count",
+  },
+  {
+    name: "levelTwoCount",
+    label: "Level Two Count",
+    field: "level_two_count",
+  },
+  {
+    name: "levelThreeCount",
+    label: "Level Three Count",
+    field: "level_three_count",
+  },
+  {
+    name: "levelFourCount",
+    label: "Level Four Count",
+    field: "level_four_count",
   },
 ];
 
@@ -121,10 +95,6 @@ const filter = ref("");
 const showFilter = ref(false);
 
 // Functions
-const closeNewUserPopup = () => {
-  openNewUserPopup.value = false;
-};
-
 const showLoader = () => {
   $q.loading.show({
     spinner: QSpinnerGears,
@@ -139,15 +109,15 @@ const hideLoader = () => {
   $q.loading.hide();
 };
 
-const webUsersList = () => {
+const customersList = () => {
   showLoader();
   userStore
-    .getWebUsersList()
+    .getCustomersList()
     .then((res) => {
       rows.value = res.data;
     })
     .catch((err) => {
-      console.log("errror", error);
+      console.log("errror", err);
     })
     .finally(() => {
       hideLoader();
@@ -156,6 +126,6 @@ const webUsersList = () => {
 
 // Lifecycle Hooks
 onMounted(() => {
-  webUsersList();
+  customersList();
 });
 </script>

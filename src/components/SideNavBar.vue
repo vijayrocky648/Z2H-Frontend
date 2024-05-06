@@ -46,6 +46,7 @@
 
       <q-item
         v-if="showCustomersPage"
+        to="/customers"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
