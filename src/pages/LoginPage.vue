@@ -51,7 +51,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useQuasar, QSpinnerGears } from "quasar";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user.js";
 
@@ -69,10 +69,10 @@ const $q = useQuasar();
 // Functions
 const showLoader = () => {
   $q.loading.show({
-    spinner: QSpinnerGears,
-    spinnerColor: "blue",
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
     messageColor: "white",
-    backgroundColor: "blue",
+    backgroundColor: "light-blue",
     message: "",
   });
 };

@@ -15,6 +15,7 @@
 
   <div style="margin-top: 100px" class="q-ml-md q-mr-lg">
     <q-table
+      class="users-table"
       flat
       bordered
       title="Web Users"
@@ -60,9 +61,8 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useQuasar, QSpinnerGears } from "quasar";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
-import { storeToRefs } from "pinia";
 import createNewUserModal from "src/components/popups/createNewUserModal.vue";
 
 // Store Initialization
@@ -127,10 +127,10 @@ const closeNewUserPopup = () => {
 
 const showLoader = () => {
   $q.loading.show({
-    spinner: QSpinnerGears,
-    spinnerColor: "blue",
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
     messageColor: "white",
-    backgroundColor: "blue",
+    backgroundColor: "light-blue",
     message: "",
   });
 };
@@ -159,3 +159,14 @@ onMounted(() => {
   webUsersList();
 });
 </script>
+
+<style>
+.users-table .q-table__title {
+  color: #123499;
+  font-weight: bold;
+}
+
+.users-table thead {
+  color: #123499;
+}
+</style>

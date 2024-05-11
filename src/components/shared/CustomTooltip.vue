@@ -1,6 +1,6 @@
 <template>
   <q-tooltip
-    class="bg-grey-10 q-pa-md"
+    class="bg-blue-grey-8 q-pa-md"
     outlined
     :delay="$tooltipDelay"
     anchor="center right"

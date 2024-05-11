@@ -232,7 +232,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
-import { useQuasar, QSpinnerGears } from "quasar";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import { storeToRefs } from "pinia";
 import infoCircleIcon from "src/assets/icons/info-circle.svg";
@@ -348,10 +348,10 @@ watch(planPackage, (value) => {
 // Functions
 const showLoader = () => {
   $q.loading.show({
-    spinner: QSpinnerGears,
-    spinnerColor: "blue",
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
     messageColor: "white",
-    backgroundColor: "blue",
+    backgroundColor: "light-blue",
     message: "",
   });
 };
@@ -426,7 +426,7 @@ onMounted(() => {
 
 .header-text {
   font-weight: bold;
-  color: blue;
+  color: #123499;
 }
 
 .h-100vh {

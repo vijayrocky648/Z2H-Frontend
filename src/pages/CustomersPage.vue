@@ -1,6 +1,7 @@
 <template>
   <div style="margin-top: 50px" class="q-ml-md q-mr-lg q-pa-md">
     <q-table
+      class="customers-table"
       flat
       bordered
       title="Customers"
@@ -39,7 +40,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useQuasar, QSpinnerGears } from "quasar";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
 
 // Store Initialization
@@ -97,10 +98,10 @@ const showFilter = ref(false);
 // Functions
 const showLoader = () => {
   $q.loading.show({
-    spinner: QSpinnerGears,
-    spinnerColor: "blue",
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
     messageColor: "white",
-    backgroundColor: "blue",
+    backgroundColor: "light-blue",
     message: "",
   });
 };
@@ -129,3 +130,14 @@ onMounted(() => {
   customersList();
 });
 </script>
+
+<style>
+.customers-table .q-table__title{
+  color: #1A43BF;
+  font-weight: bold;
+}
+
+.customers-table thead {
+  color: #123499;
+}
+</style>

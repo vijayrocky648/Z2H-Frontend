@@ -49,5 +49,10 @@ export const useGeneralStore = defineStore("general", {
       let url = `/api/z2h/utils/district/${payload.stateUid}/`;
       return api.get(url);
     },
+
+    getOrders() {
+      let url = "/api/z2h/app/orders/";
+      return api.get(url);
+    },
   }
 })

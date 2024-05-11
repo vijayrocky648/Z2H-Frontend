@@ -2,7 +2,7 @@
   <q-dialog v-model="openPopup" persistent @keydown.esc="closeModal">
     <q-card class="user-modal">
       <q-card-section class="row items-center">
-        <div class="text-h6 text-bold" style="color: blue">
+        <div class="text-h6 text-bold" style="color: #123499">
           Create New Web User
         </div>
         <q-space />
@@ -462,7 +462,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import { useQuasar, QSpinnerGears } from "quasar";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
@@ -611,10 +611,10 @@ watch(state, (value) => {
 // Functions
 const showLoader = () => {
   $q.loading.show({
-    spinner: QSpinnerGears,
-    spinnerColor: "blue",
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
     messageColor: "white",
-    backgroundColor: "blue",
+    backgroundColor: "light-blue",
     message: "",
   });
 };
