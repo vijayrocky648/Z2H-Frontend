@@ -7,7 +7,7 @@
         >
           <q-card-section>
             <q-avatar size="103px" class="absolute-center shadow-10">
-              <img src="company_logo.jpg" alt="" />
+              <img src="company_logo_V2.png" alt="" />
             </q-avatar>
           </q-card-section>
           <q-card-section>
