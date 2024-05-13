@@ -65,8 +65,49 @@
                             class="col-12 flex items-center justify-start q-pb-md"
                           >
                             <div style="min-width: 53px">
-                              Level 1 commission Fee (₹)
+                              Level 1 commission
                             </div>
+                            <q-checkbox
+                              v-model="levelOneFlat"
+                              class="q-ml-lg"
+                              label="Flat"
+                            />
+                            <div class="q-ml-sm">(₹)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelOneCommissionFee"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <q-checkbox
+                              v-model="levelOnePercentage"
+                              class="q-ml-lg"
+                              label="Percentage"
+                            />
+                            <div class="q-ml-sm">(%)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelOnePercentageValue"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <div class="q-ml-lg text-bold">Toatl Value (₹)</div>
                             <div
                               style="max-width: 100px; max-height: 40px"
                               class="q-ml-lg"
@@ -94,8 +135,49 @@
                             class="col-12 flex items-center justify-start q-pb-md"
                           >
                             <div style="min-width: 53px">
-                              Level 2 commission Fee (₹)
+                              Level 2 commission
                             </div>
+                            <q-checkbox
+                              v-model="levelTwoFlat"
+                              class="q-ml-lg"
+                              label="Flat"
+                            />
+                            <div class="q-ml-sm">(₹)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelTwoCommissionFee"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <q-checkbox
+                              v-model="levelTwoPercentage"
+                              class="q-ml-lg"
+                              label="Percentage"
+                            />
+                            <div class="q-ml-sm">(%)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelTwoPercentageValue"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <div class="q-ml-lg text-bold">Toatl Value (₹)</div>
                             <div
                               style="max-width: 100px; max-height: 40px"
                               class="q-ml-lg"
@@ -123,8 +205,49 @@
                             class="col-12 flex items-center justify-start q-pb-md"
                           >
                             <div style="min-width: 53px">
-                              Level 3 commission Fee (₹)
+                              Level 3 commission
                             </div>
+                            <q-checkbox
+                              v-model="levelThreeFlat"
+                              class="q-ml-lg"
+                              label="Flat"
+                            />
+                            <div class="q-ml-sm">(₹)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelThreeCommissionFee"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <q-checkbox
+                              v-model="levelThreePercentage"
+                              class="q-ml-lg"
+                              label="Percentage"
+                            />
+                            <div class="q-ml-sm">(%)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelThreePercentageValue"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <div class="q-ml-lg text-bold">Toatl Value (₹)</div>
                             <div
                               style="max-width: 100px; max-height: 40px"
                               class="q-ml-lg"
@@ -152,8 +275,49 @@
                             class="col-12 flex items-center justify-start q-pb-md"
                           >
                             <div style="min-width: 53px">
-                              Level 4 commission Fee (₹)
+                              Level 4 commission
                             </div>
+                            <q-checkbox
+                              v-model="levelFourFlat"
+                              class="q-ml-lg"
+                              label="Flat"
+                            />
+                            <div class="q-ml-sm">(₹)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelFourCommissionFee"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <q-checkbox
+                              v-model="levelFourPercentage"
+                              class="q-ml-lg"
+                              label="Percentage"
+                            />
+                            <div class="q-ml-sm">(%)</div>
+                            <q-input
+                              class="q-ml-sm"
+                              v-model="levelFourPercentageValue"
+                              style="max-width: 100px; max-height: 40px"
+                              dense
+                              :rules="[
+                                (val) =>
+                                  (val !== null &&
+                                    val !== '' &&
+                                    parseInt(val) != NaN) ||
+                                  'Please type a number',
+                                (val) => val > 0 || 'Please type a real number',
+                              ]"
+                            />
+                            <div class="q-ml-lg text-bold">Toatl Value (₹)</div>
                             <div
                               style="max-width: 100px; max-height: 40px"
                               class="q-ml-lg"
@@ -248,6 +412,18 @@ const levelTwoCommissionFee = ref(0);
 const levelThreeCommissionFee = ref(0);
 const levelFourCommissionFee = ref(0);
 const registrationFee = ref(0);
+const levelOneFlat = ref(false);
+const levelOnePercentage = ref(false);
+const levelOnePercentageValue = ref(null);
+const levelTwoFlat = ref(false);
+const levelTwoPercentage = ref(false);
+const levelTwoPercentageValue = ref(null);
+const levelThreeFlat = ref(false);
+const levelThreePercentage = ref(false);
+const levelThreePercentageValue = ref(null);
+const levelFourFlat = ref(false);
+const levelFourPercentage = ref(false);
+const levelFourPercentageValue = ref(null);
 const $q = useQuasar();
 
 const { planDetails } = storeToRefs(generalStore);
@@ -369,6 +545,18 @@ const updatePlanPackageDetails = () => {
   levelThreeCommissionFee.value = parseFloat(requiredPlan.level_three_amount);
   levelFourCommissionFee.value = parseFloat(requiredPlan.level_four_amount);
   registrationFee.value = parseFloat(requiredPlan.registration_fee);
+  levelOneFlat.value = requiredPlan.is_level_one_flat;
+  levelOnePercentage.value = requiredPlan.is_level_one_percentage;
+  levelOnePercentageValue.value = requiredPlan.level_one_percentage_value;
+  levelTwoFlat.value = requiredPlan.is_level_two_flat;
+  levelTwoPercentage.value = requiredPlan.is_level_two_percentage;
+  levelTwoPercentageValue.value = requiredPlan.level_two_percentage_value;
+  levelThreeFlat.value = requiredPlan.is_level_three_flat;
+  levelThreePercentage.value = requiredPlan.is_level_three_percentage;
+  levelThreePercentageValue.value = requiredPlan.level_three_percentage_value;
+  levelFourFlat.value = requiredPlan.is_level_four_flat;
+  levelFourPercentage.value = requiredPlan.is_level_four_percentage;
+  levelFourPercentageValue.value = requiredPlan.level_four_percentage_value;
 };
 
 const updateCustomerSettings = () => {
