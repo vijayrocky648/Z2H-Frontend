@@ -50,9 +50,16 @@ export const useGeneralStore = defineStore("general", {
       return api.get(url);
     },
 
-    getOrders() {
+    getOrders(queryParams) {
       let url = "/api/z2h/app/orders/";
-      return api.get(url);
+      return api.get(url, {
+        params: queryParams,
+      });
     },
+
+    updateOrders(payload, OrderUid) {
+      let url = `/api/z2h/app/orders/${OrderUid}/`;
+      return api.patch(url, payload);
+    }
   }
 })

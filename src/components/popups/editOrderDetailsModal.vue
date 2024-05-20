@@ -8,58 +8,85 @@
         <q-space />
         <q-btn icon="close" flat round @click="closeModal" />
       </q-card-section>
-      <q-form>
-        <q-card-section>
-          <div class="text-bold">Customer - <span class="text-green">{{ customerName }}</span></div>
-          <div class="text-bold q-mt-lg">Delivery Date</div>
-          <q-input
+      <q-form @submit="updateOrderStatus">
+        <q-scroll-area style="height: calc(95vh - 170px)">
+          <q-card-section>
+            <div class="text-bold">
+              Customer - <span class="text-green">{{ customerName }}</span>
+            </div>
+            <div class="text-bold q-mt-md">Delivery Date</div>
+            <q-input
               v-model="deliveryDate"
               style="max-width: 200px"
               outlined
               dense
               autofocus
               type="date"
-          />
-          <div class="text-bold q-mt-md">Delivery Number</div>
-          <q-input
-            v-model="deliveryNumber"
-            style="max-width: 400px"
-            outlined
-            dense
-            autofocus
-            placeholder="Enter a Delivery Number"
-            maxlength="128"
-          />
-          <div class="text-bold q-mt-md">Delivery Name</div>
-          <q-input
-            v-model="deliveryName"
-            style="max-width: 400px"
-            outlined
-            dense
-            autofocus
-            placeholder="Enter a Delivery Partner"
-            maxlength="128"
-          />
-          <div class="text-bold q-mt-md">Delivery Address</div>
-          <q-input
-            v-model="deliveryAddress"
-            type="textarea"
-            style="width: 400px"
-            outlined
-            dense
-            autofocus
-            rows="2"
-            placeholder="Enter Delivery address."
-            input-class="textarea-input"
-          />
-          <div class="text-bold q-mt-md">Order Status</div>
-          <q-select
-            style="width: 320px"
-            filled
-            v-model="orderStatus"
-            :options="orderStatusOptions"
-          />
-        </q-card-section>
+              :disable="disableDeliveryDate"
+            />
+            <div class="text-bold q-mt-md">Courier Date</div>
+            <q-input
+              v-model="courierDate"
+              style="max-width: 200px"
+              outlined
+              dense
+              autofocus
+              type="date"
+              :disable="disableCourierDate"
+            />
+            <div class="text-bold q-mt-sm">Courier Number</div>
+            <q-input
+              v-model="deliveryNumber"
+              style="max-width: 400px"
+              outlined
+              dense
+              autofocus
+              placeholder="Enter a Courier Number"
+              maxlength="128"
+              :rules="[
+                (val) => dataEnteredValidation(val) || 'Field is required!!!',
+              ]"
+              :disable="disableCourierNumber"
+            />
+            <div class="text-bold q-mt-sm">Name of the Courier</div>
+            <q-input
+              v-model="deliveryName"
+              style="max-width: 400px"
+              outlined
+              dense
+              autofocus
+              placeholder="Enter a Name of the Courier"
+              maxlength="128"
+              :rules="[
+                (val) => dataEnteredValidation(val) || 'Field is required!!!',
+              ]"
+              :disable="disableNameOfCourier"
+            />
+            <div class="text-bold q-mt-sm">Delivery Address</div>
+            <q-input
+              v-model="deliveryAddress"
+              type="textarea"
+              style="width: 400px"
+              outlined
+              dense
+              autofocus
+              rows="2"
+              placeholder="Enter Delivery address."
+              input-class="textarea-input"
+              :rules="[
+                (val) => dataEnteredValidation(val) || 'Field is required!!!',
+              ]"
+              :disable="disbaleDeliveryAddress"
+            />
+            <div class="text-bold q-mt-sm">Order Status</div>
+            <q-select
+              style="width: 320px"
+              filled
+              v-model="orderStatus"
+              :options="orderStatusOptions"
+            />
+          </q-card-section>
+        </q-scroll-area>
         <q-card-section class="row justify-end">
           <q-card-actions class="q-px-none">
             <q-btn
@@ -68,6 +95,7 @@
               label="Save"
               type="submit"
               no-caps
+              :disable="validateSave"
             />
           </q-card-actions>
         </q-card-section>
@@ -77,7 +105,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useQuasar, QSpinnerFacebook } from "quasar";
+import { useGeneralStore } from "src/stores/general";
+
+// Store Initialization
+const generalStore = useGeneralStore();
+
+// Variable Initialization
+const $q = useQuasar();
 
 //Props
 const props = defineProps({
@@ -97,17 +133,18 @@ const props = defineProps({
 });
 
 // variable Initialization
-const deliveryDate = ref(props.selectedData[0].delivery_date);
-const deliveryNumber = ref(props.selectedData[0].delivery_name);
+const deliveryDate = ref("");
+const courierDate = ref("");
+const deliveryNumber = ref(props.selectedData[0].delivery_number);
 const customerName = ref(props.selectedData[0].customer_name);
 const deliveryName = ref(props.selectedData[0].delivery_through);
 const deliveryAddress = ref(props.selectedData[0].delivery_address);
 const orderStatus = ref(props.selectedData[0].order_status);
-const orderStatusData = [
-  {label: 'pending', name: 'Pending'},
-  {label: 'couriered', name: 'Couriered'},
-  {label: 'delivered', name: 'Delivered'},
-  {label: 'cancelled', name: 'Cancelled'},
+let orderStatusData = [
+  { label: "pending", name: "Pending" },
+  { label: "couriered", name: "Couriered" },
+  { label: "delivered", name: "Delivered" },
+  { label: "cancelled", name: "Cancelled" },
 ];
 
 // Computed
@@ -117,13 +154,176 @@ const openPopup = computed({
 });
 
 const orderStatusOptions = computed(() => {
-  return orderStatusData.map((orderStatus) => orderStatus.name)
+  return orderStatusData.map((orderStatus) => orderStatus.name);
+});
+
+const disableDeliveryDate = computed(() => {
+  let disableStatusArray = ["Pending", "Delivered", "Cancelled"];
+  return disableStatusArray.includes(props.selectedData[0].order_status);
+});
+
+const disableCourierDate = computed(() => {
+  return props.selectedData[0].order_status !== "Pending";
+});
+
+const disableCourierNumber = computed(() => {
+  return props.selectedData[0].order_status === "Couriered";
+});
+
+const disableNameOfCourier = computed(() => {
+  return props.selectedData[0].order_status === "Couriered";
+});
+
+const disbaleDeliveryAddress = computed(() => {
+  return props.selectedData[0].order_status === "Couriered";
+});
+
+const getOrderStatus = computed(() => {
+  console.log("Order status data", orderStatusData);
+  let requiredOrder = orderStatusData.find(
+    (status) => status.name === orderStatus.value
+  );
+
+  return requiredOrder.label;
+});
+
+const validateSave = computed(() => {
+  let isDeliveryNumberValid = dataEnteredValidation(deliveryNumber.value);
+  let isDeliveryNameValid = dataEnteredValidation(deliveryName.value);
+  let isDeliveryAddressValid = dataEnteredValidation(deliveryAddress.value);
+  let isOrderStatusPending = orderStatus.value === "Pending";
+  let isOrderStatusCouriered = orderStatus.value === "Couriered";
+  let isOrderStatusDelivered = orderStatus.value === "Delivered";
+  let isCourierDateValid = isOrderStatusCouriered && courierDate.value;
+  let isDeliveryDateValid = isOrderStatusDelivered && deliveryDate.value;
+  let courierDateGreaterThanDeliveryDate =
+    courierDate.value &&
+    deliveryDate.value &&
+    courierDate.value > deliveryDate.value;
+
+  if (courierDateGreaterThanDeliveryDate) {
+    return true;
+  }
+
+  if (
+    props.selectedData[0].order_status === "Couriered" &&
+    !deliveryDate.value
+  ) {
+    return true;
+  }
+
+  if (isOrderStatusCouriered && deliveryDate.value) {
+    return true;
+  }
+
+  if (isOrderStatusDelivered) {
+    return !isDeliveryDateValid;
+  }
+
+  return (
+    !isDeliveryNumberValid ||
+    !isDeliveryNameValid ||
+    !isDeliveryAddressValid ||
+    isOrderStatusPending ||
+    !isCourierDateValid
+  );
 });
 
 // Methods
-const closeModal = () => {
-  props.closeNewUserPopup();
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
+    messageColor: "white",
+    backgroundColor: "light-blue",
+    message: "",
+  });
 };
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
+const closeModal = (refreshData = false) => {
+  props.closeNewUserPopup(refreshData);
+};
+
+const dataEnteredValidation = (data) => {
+  return data && data.toString().trim().length > 0;
+};
+
+const updateOrderStatusData = () => {
+  let selectedDataOrderStatus = props.selectedData[0].order_status;
+
+  if (selectedDataOrderStatus === "Pending") {
+    return;
+  }
+
+  if (selectedDataOrderStatus === "Couriered") {
+    orderStatusData = [
+      { label: "delivered", name: "Delivered" },
+      { label: "cancelled", name: "Cancelled" },
+    ];
+  } else if (
+    selectedDataOrderStatus === "Delivered" ||
+    selectedDataOrderStatus === "Cancelled"
+  ) {
+    orderStatusData = [];
+  }
+};
+
+const changeDate = (inputDate) => {
+  const [day, month, year] = inputDate.split("-");
+  return `${year}-${month}-${day}`;
+};
+
+const updateOrderStatus = () => {
+  showLoader();
+
+  let payload = {
+    delivery_date: deliveryDate.value ?? null,
+    courier_date: courierDate.value,
+    delivery_details: {
+      delivery_through: deliveryName.value,
+      delivery_number: deliveryNumber.value,
+      delivery_address: deliveryAddress.value,
+    },
+    order_status: getOrderStatus.value,
+  };
+  generalStore
+    .updateOrders(payload, props.selectedData[0].order_id)
+    .then((res) => {
+      closeModal(true);
+      $q.notify({
+        message: "Order Details Updated Successfully!!!",
+        type: "positive",
+        position: "top",
+      });
+    })
+    .catch((err) => {
+      $q.notify({
+        message: "Something went Wrong. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    });
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+  if (props.selectedData[0].courier_date) {
+    courierDate.value = changeDate(props.selectedData[0].courier_date);
+  }
+
+  if (props.selectedData[0].delivery_date) {
+    deliveryDate.value = changeDate(props.selectedData[0].delivery_date);
+  }
+
+  updateOrderStatusData();
+});
 </script>
 
 <style scoped>

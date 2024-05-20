@@ -113,7 +113,8 @@ module.exports = configure(function (/* ctx */) {
       // Quasar plugins
       plugins: [
         'AppFullscreen', 'Loading', 'Notify', 'Dialog'
-      ]
+      ],
+      iconSet: 'fontawesome-v6'
     },
 
     // animations: 'all', // --- includes all animations

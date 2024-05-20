@@ -14,6 +14,12 @@
   </div>
 
   <div style="margin-top: 100px" class="q-ml-md q-mr-lg">
+    <q-btn color="green" class="q-mb-md" no-caps @click="excelExport">
+      <div class="row justify-start items-center">
+        <q-icon name="fas fa-file-excel" />
+        <span class="q-ml-sm">Export</span>
+      </div>
+    </q-btn>
     <q-table
       class="users-table"
       flat
@@ -64,6 +70,7 @@ import { ref, onMounted } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
 import createNewUserModal from "src/components/popups/createNewUserModal.vue";
+import { exportToExcel } from "src/utils/exportToExcel";
 
 // Store Initialization
 const userStore = useUserStore();
@@ -152,6 +159,38 @@ const webUsersList = () => {
     .finally(() => {
       hideLoader();
     });
+};
+
+const excelExport = () => {
+  let requiredRows = [];
+
+  for (let row of rows.value) {
+    let data = {
+      Name: row.name,
+      "Email Address": row.system_email,
+      "Date of Birth": row.date_of_birth,
+      "Marital Status": row.marital_status,
+      Gender: row.gender,
+      "Aadhar Number": row.aadhar_number,
+      PAN: row.pan,
+      "Mobile Number": row.mobile_number,
+      City: row.city,
+      Town: row.town,
+      Address: row.address,
+      "Pin Code": row.pin_code,
+      "Bank Account Number": row.account_number,
+      "Bank Name": row.name_of_bank,
+      "User Name In Bank": row.name_as_in_bank,
+      "IFSC Code": row.ifsc_code,
+      "Bank Branch": row.bank_branch,
+      "Personal Email Address": row.email_address,
+      "Alternate Mobile Number": row.alternate_mobile_number,
+    };
+
+    requiredRows.push(data);
+  }
+
+  exportToExcel(requiredRows, "web_users.xlsx");
 };
 
 // Lifecycle Hooks
