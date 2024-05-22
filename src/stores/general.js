@@ -6,6 +6,7 @@ export const useGeneralStore = defineStore("general", {
     userRoles: [],
     userRolePages: [],
     planDetails: [],
+    orders: [],
   }),
   getters: {},
   actions: {

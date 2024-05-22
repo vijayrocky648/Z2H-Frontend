@@ -91,6 +91,18 @@
       @click="editOrderDetails"
     />
   </div>
+  <div v-if="selected.length" class="q-ml-md q-mt-sm q-mr-lg q-pa-md">
+    <q-table
+      class="orders-table"
+      flat
+      bordered
+      title="Order Items"
+      :rows="rowsOrderItems"
+      :columns="columnsOrderItems"
+      row-key="order_id"
+      :filter="filter"
+    />
+  </div>
   <edit-order-details-modal
     v-if="openNewUserPopup"
     v-model="openNewUserPopup"
@@ -101,11 +113,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import editOrderDetailsModal from "src/components/popups/editOrderDetailsModal.vue";
 import { exportToExcel } from "src/utils/exportToExcel";
+import { storeToRefs } from "pinia";
 
 // Store Initialization
 const generalStore = useGeneralStore();
@@ -113,6 +126,7 @@ const generalStore = useGeneralStore();
 // Variable Initializations
 const openNewUserPopup = ref(false);
 const $q = useQuasar();
+const { orders } = storeToRefs(generalStore);
 let columnsData = [
   {
     name: "orderId",
@@ -171,9 +185,82 @@ let columnsData = [
     field: "payment_reference",
   },
 ];
+let columnsDataOrderItems = [
+  {
+    name: "uid",
+    required: true,
+    label: "Order Id",
+    align: "left",
+    field: (row) => row.uid,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "productName",
+    label: "Product Name",
+    field: "product_name",
+  },
+  {
+    name: "quantity",
+    label: "Quantity",
+    field: "quantity",
+  },
+  {
+    name: "hsnCode",
+    label: "HSN Code",
+    field: "hsn_code",
+  },
+  {
+    name: "price",
+    label: "Price (INR)",
+    field: "price",
+  },
+  {
+    name: "cgstPercentage",
+    label: "CGST (%)",
+    field: "cgst_percentage",
+  },
+  {
+    name: "cgstAmount",
+    label: "CGST Amount (INR)",
+    field: "cgst_amount",
+  },
+  {
+    name: "sgstPercentage",
+    label: "SGST (%)",
+    field: "sgst_percentage",
+  },
+  {
+    name: "sgstAmount",
+    label: "SGST Amount (INR)",
+    field: "sgst_amount",
+  },
+  {
+    name: "igstPercentage",
+    label: "IGST (%)",
+    field: "igst_percentage",
+  },
+  {
+    name: "igstAmount",
+    label: "IGST Amount (INR)",
+    field: "igst_amount",
+  },
+  {
+    name: "gstTotalAmount",
+    label: "GST Total (INR)",
+    field: "gst_total_amount",
+  },
+  {
+    name: "totalAmount",
+    label: "Total (INR)",
+    field: "total_amount",
+  },
+];
 
 const columns = ref(columnsData);
 const rows = ref([]);
+const columnsOrderItems = ref(columnsDataOrderItems);
+const rowsOrderItems = ref([]);
 const selected = ref([]);
 const filter = ref("");
 const showFilter = ref(false);
@@ -230,6 +317,7 @@ const ordersList = () => {
   generalStore
     .getOrders(queryParams)
     .then((res) => {
+      orders.value = res.data;
       rows.value = res.data;
     })
     .catch((err) => {
@@ -238,6 +326,15 @@ const ordersList = () => {
     .finally(() => {
       hideLoader();
     });
+};
+
+const displayOrderItems = () => {
+  let requiredOrderItems = orders.value.find(
+    (order) => order.order_id === selected.value[0].order_id
+  ).order_items;
+
+  console.log("requiredOrderItems", requiredOrderItems);
+  rowsOrderItems.value = requiredOrderItems;
 };
 
 const getSearchData = () => {
@@ -287,6 +384,15 @@ const excelExport = () => {
 
   exportToExcel(requiredData, fileName);
 };
+
+// Watchers
+watch(selected, (value) => {
+  if (value.length) {
+    displayOrderItems();
+  } else {
+    rowsOrderItems.value = [];
+  }
+});
 
 // Lifecycle Hooks
 onMounted(() => {
