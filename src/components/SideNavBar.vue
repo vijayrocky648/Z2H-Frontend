@@ -35,7 +35,11 @@
         </q-item-section>
       </q-item>
 
-      <q-item v-if="showOrdersPage" to="/orders" active-class="q-item-no-link-highlighting">
+      <q-item
+        v-if="showOrdersPage"
+        to="/orders"
+        active-class="q-item-no-link-highlighting"
+      >
         <q-item-section avatar>
           <q-icon name="shopping_cart" />
         </q-item-section>

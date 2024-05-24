@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 50px" class="q-ml-md q-mr-lg q-pa-md">
+  <div style="margin-top: 30px" class="q-ml-md q-mr-lg q-pa-md">
     <q-table
       class="customers-table"
       flat
@@ -36,18 +36,166 @@
       </template>
     </q-table>
   </div>
+
+  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+    <q-table
+      class="customers-table"
+      flat
+      bordered
+      :title="firstLevelTitle"
+      :rows="rowsFirstLevel"
+      :columns="columns"
+      row-key="name"
+      :filter="filterFirstLevel"
+    >
+      <template v-slot:top-right>
+        <q-input
+          v-if="showFilterFirstLevel"
+          filled
+          borderless
+          dense
+          debounce="300"
+          v-model="filterFirstLevel"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <q-btn
+          class="q-ml-sm"
+          icon="filter_list"
+          @click="showFilterFirstLevel = !showFilterFirstLevel"
+          flat
+        />
+      </template>
+    </q-table>
+  </div>
+
+  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+    <q-table
+      class="customers-table"
+      flat
+      bordered
+      :title="secondLevelTitle"
+      :rows="rowsSecondLevel"
+      :columns="columns"
+      row-key="name"
+      :filter="filterSecondLevel"
+    >
+      <template v-slot:top-right>
+        <q-input
+          v-if="showFilterSecondLevel"
+          filled
+          borderless
+          dense
+          debounce="300"
+          v-model="filterSecondLevel"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <q-btn
+          class="q-ml-sm"
+          icon="filter_list"
+          @click="showFilterSecondLevel = !showFilterSecondLevel"
+          flat
+        />
+      </template>
+    </q-table>
+  </div>
+
+  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+    <q-table
+      class="customers-table"
+      flat
+      bordered
+      :title="thirdLevelTitle"
+      :rows="rowsThirdLevel"
+      :columns="columns"
+      row-key="name"
+      :filter="filterThirdLevel"
+    >
+      <template v-slot:top-right>
+        <q-input
+          v-if="showFilterThirdLevel"
+          filled
+          borderless
+          dense
+          debounce="300"
+          v-model="filterThirdLevel"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <q-btn
+          class="q-ml-sm"
+          icon="filter_list"
+          @click="showFilterThirdLevel = !showFilterThirdLevel"
+          flat
+        />
+      </template>
+    </q-table>
+  </div>
+
+  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+    <q-table
+      class="customers-table"
+      flat
+      bordered
+      :title="fourthLevelTitle"
+      :rows="rowsFourthLevel"
+      :columns="columns"
+      row-key="name"
+      :filter="filterFourthLevel"
+    >
+      <template v-slot:top-right>
+        <q-input
+          v-if="showFilterFourthLevel"
+          filled
+          borderless
+          dense
+          debounce="300"
+          v-model="filterFourthLevel"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <q-btn
+          class="q-ml-sm"
+          icon="filter_list"
+          @click="showFilterFourthLevel = !showFilterFourthLevel"
+          flat
+        />
+      </template>
+    </q-table>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
+import { useGeneralStore } from "src/stores/general";
+import { storeToRefs } from "pinia";
 
 // Store Initialization
 const userStore = useUserStore();
+const generalStore = useGeneralStore();
 
 // Variable Initializations
 const $q = useQuasar();
+const { selectedPage } = storeToRefs(generalStore);
 let columnsData = [
   {
     name: "name",
@@ -91,9 +239,26 @@ let columnsData = [
 
 const columns = ref(columnsData);
 const rows = ref([]);
+const rowsFirstLevel = ref([]);
+const rowsSecondLevel = ref([]);
+const rowsThirdLevel = ref([]);
+const rowsFourthLevel = ref([]);
 const selected = ref([]);
 const filter = ref("");
+const filterFirstLevel = ref("");
+const filterSecondLevel = ref("");
+const filterThirdLevel = ref("");
+const filterFourthLevel = ref("");
 const showFilter = ref(false);
+const showFilterFirstLevel = ref(false);
+const showFilterSecondLevel = ref(false);
+const showFilterThirdLevel = ref(false);
+const showFilterFourthLevel = ref(false);
+const firstLevelTitle = ref("");
+const secondLevelTitle = ref("");
+const thirdLevelTitle = ref("");
+const fourthLevelTitle = ref("");
+const enableCustomerLevels = ref(false);
 
 // Functions
 const showLoader = () => {
@@ -125,15 +290,54 @@ const customersList = () => {
     });
 };
 
+const getCustomersUnderSelectedUser = () => {
+  showLoader();
+  let selectedUserUid = selected.value[0].uid;
+  firstLevelTitle.value = `First Level Customers Under ${selected.value[0].name}`;
+  secondLevelTitle.value = `Second Level Customers Under ${selected.value[0].name}`;
+  thirdLevelTitle.value = `Third Level Customers Under ${selected.value[0].name}`;
+  fourthLevelTitle.value = `Fourth Level Customers Under ${selected.value[0].name}`;
+  userStore
+    .getCustomerDetails(selectedUserUid)
+    .then((response) => {
+      let responseData = response.data;
+      rowsFirstLevel.value = responseData.first_level_customers;
+      rowsSecondLevel.value = responseData.second_level_customers;
+      rowsThirdLevel.value = responseData.third_level_customers;
+      rowsFourthLevel.value = responseData.fourth_level_customers;
+      enableCustomerLevels.value = true;
+    })
+    .catch((error) => {
+      console.log("error", error);
+    })
+    .finally(() => {
+      hideLoader();
+    });
+};
+
+// Watchers
+watch(selected, (value) => {
+  if (value.length) {
+    getCustomersUnderSelectedUser();
+  } else {
+    rowsFirstLevel.value = [];
+    rowsSecondLevel.value = [];
+    rowsThirdLevel.value = [];
+    rowsFourthLevel.value = [];
+    enableCustomerLevels.value = false;
+  }
+});
+
 // Lifecycle Hooks
 onMounted(() => {
+  selectedPage.value = "Customers";
   customersList();
 });
 </script>
 
 <style>
-.customers-table .q-table__title{
-  color: #1A43BF;
+.customers-table .q-table__title {
+  color: #1a43bf;
   font-weight: bold;
 }
 

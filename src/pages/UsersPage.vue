@@ -69,15 +69,19 @@
 import { ref, onMounted } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
+import { useGeneralStore } from "src/stores/general";
 import createNewUserModal from "src/components/popups/createNewUserModal.vue";
 import { exportToExcel } from "src/utils/exportToExcel";
+import { storeToRefs } from "pinia";
 
 // Store Initialization
 const userStore = useUserStore();
+const generalStore = useGeneralStore();
 
 // Variable Initializations
 const openNewUserPopup = ref(false);
 const $q = useQuasar();
+const { selectedPage } = storeToRefs(generalStore);
 
 let columnsData = [
   {
@@ -195,6 +199,7 @@ const excelExport = () => {
 
 // Lifecycle Hooks
 onMounted(() => {
+  selectedPage.value = "Web Users";
   webUsersList();
 });
 </script>

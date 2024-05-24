@@ -126,7 +126,7 @@ const generalStore = useGeneralStore();
 // Variable Initializations
 const openNewUserPopup = ref(false);
 const $q = useQuasar();
-const { orders } = storeToRefs(generalStore);
+const { orders, selectedPage } = storeToRefs(generalStore);
 let columnsData = [
   {
     name: "orderId",
@@ -396,6 +396,7 @@ watch(selected, (value) => {
 
 // Lifecycle Hooks
 onMounted(() => {
+  selectedPage.value = "Orders";
   ordersList();
 });
 </script>

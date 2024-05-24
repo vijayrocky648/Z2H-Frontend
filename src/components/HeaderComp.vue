@@ -9,7 +9,7 @@
         icon="menu"
         aria-label="Menu"
       />
-      <q-toolbar-title> Zero To Hero </q-toolbar-title>
+      <q-toolbar-title> {{ pageTitle }} </q-toolbar-title>
       <q-space />
       <div class="q-gutter-sm row items-center no-wrap">
         <q-btn
@@ -28,11 +28,26 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useGeneralStore } from "src/stores/general";
+import { storeToRefs } from "pinia";
+
+// Store Initialization
+const generalStore = useGeneralStore();
+
 // Props
 const props = defineProps({
   toggleLeftDrawer: {
     type: Function,
     required: true,
   },
+});
+
+// Variable Initialization
+const { selectedPage } = storeToRefs(generalStore);
+
+// Computed
+const pageTitle = computed(() => {
+  return `Zero To Hero / ${selectedPage.value}`;
 });
 </script>

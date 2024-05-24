@@ -15,7 +15,9 @@ export const useUserStore = defineStore("user", {
 
     async getUserInfo() {
       let url = '/api/z2h/user/info/';
-      return api.get(url).then(res => {
+      return api.get(url, {
+        params: { accessed_from: 'web' }
+      }).then(res => {
         this.userInfo = res.data.user_info;
       })
     },
@@ -42,6 +44,11 @@ export const useUserStore = defineStore("user", {
     getCustomersList() {
       let url = '/api/z2h/user/customer/';
       return api.get(url);
+    },
+
+    getCustomerDetails(customerUid) {
+      let url = `/api/z2h/user/customer/customer_details/`;
+      return api.get(url, { params: { customer_uid: customerUid } });
     },
   },
 });
