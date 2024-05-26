@@ -25,6 +25,7 @@
 
       <q-item
         v-if="showProductsPage"
+        to="/products"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
