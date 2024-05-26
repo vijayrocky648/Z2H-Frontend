@@ -179,7 +179,6 @@ const disbaleDeliveryAddress = computed(() => {
 });
 
 const getOrderStatus = computed(() => {
-  console.log("Order status data", orderStatusData);
   let requiredOrder = orderStatusData.find(
     (status) => status.name === orderStatus.value
   );
@@ -279,6 +278,7 @@ const changeDate = (inputDate) => {
 
 const updateOrderStatus = () => {
   showLoader();
+  console.log("courier date", courierDate.value);
 
   let payload = {
     delivery_date: deliveryDate.value ?? null,

@@ -346,11 +346,10 @@ const getSearchData = () => {
       position: "top",
     });
 
-    selected.value = [];
-
     return;
   }
 
+  selected.value = [];
   ordersList();
 };
 
