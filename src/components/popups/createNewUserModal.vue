@@ -623,8 +623,8 @@ const hideLoader = () => {
   $q.loading.hide();
 };
 
-const closeModal = () => {
-  props.closeNewUserPopup();
+const closeModal = (refreshWebUsers) => {
+  props.closeNewUserPopup(refreshWebUsers);
 };
 
 const updateProxy = () => {
@@ -732,7 +732,7 @@ const validateUser = () => {
           type: "positive",
           position: "top",
         });
-        closeModal();
+        closeModal(true);
       }
     })
     .catch((err) => {

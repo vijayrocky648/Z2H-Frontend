@@ -96,7 +96,7 @@ const validateUserLogin = () => {
       localStorage.setItem("token", token);
       userStore.getUserInfo();
       router.push({
-        name: "users",
+        name: "main",
       });
     })
     .catch((err) => {

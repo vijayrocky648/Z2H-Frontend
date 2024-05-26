@@ -120,38 +120,60 @@ const props = defineProps({
 });
 
 // Computed
-const userRole = computed(() => {
-  return userInfo.value?.role;
+const userWebPages = computed(() => {
+  return userInfo.value?.web_pages;
+});
+
+const isUserRoleSuperAdmin = computed(() => {
+  return userInfo.value?.role === "Superadmin";
 });
 
 const showSettingsPage = computed(() => {
-  const requiredRoleToDisplayArray = ["Superadmin"];
-  return requiredRoleToDisplayArray.includes(userRole.value);
+  if (isUserRoleSuperAdmin.value) {
+    return true;
+  }
+
+  return userWebPages.value && userWebPages.value.includes("settings");
 });
 
 const showReportsPage = computed(() => {
-  const requiredRoleToDisplayArray = ["Superadmin"];
-  return requiredRoleToDisplayArray.includes(userRole.value);
+  if (isUserRoleSuperAdmin.value) {
+    return true;
+  }
+
+  return userWebPages.value && userWebPages.value.includes("reports");
 });
 
 const showCustomersPage = computed(() => {
-  const requiredRoleToDisplayArray = ["Superadmin"];
-  return requiredRoleToDisplayArray.includes(userRole.value);
+  if (isUserRoleSuperAdmin.value) {
+    return true;
+  }
+
+  return userWebPages.value && userWebPages.value.includes("customers");
 });
 
 const showOrdersPage = computed(() => {
-  const requiredRoleToDisplayArray = ["Superadmin"];
-  return requiredRoleToDisplayArray.includes(userRole.value);
+  if (isUserRoleSuperAdmin.value) {
+    return true;
+  }
+
+  return userWebPages.value && userWebPages.value.includes("orders");
 });
 
 const showProductsPage = computed(() => {
-  const requiredRoleToDisplayArray = ["Superadmin"];
-  return requiredRoleToDisplayArray.includes(userRole.value);
+  if (isUserRoleSuperAdmin.value) {
+    return true;
+  }
+
+  return userWebPages.value && userWebPages.value.includes("products");
 });
 
 const showUsersPage = computed(() => {
-  const requiredRoleToDisplayArray = ["Superadmin"];
-  return requiredRoleToDisplayArray.includes(userRole.value);
+  if (isUserRoleSuperAdmin.value) {
+    return true;
+  }
+
+  return userWebPages.value && userWebPages.value.includes("users");
 });
 
 // Methods

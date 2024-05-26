@@ -346,6 +346,8 @@ const getSearchData = () => {
       position: "top",
     });
 
+    selected.value = [];
+
     return;
   }
 

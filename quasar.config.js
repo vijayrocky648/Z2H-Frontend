@@ -10,7 +10,13 @@
 
 
 const { configure } = require('quasar/wrappers');
+const { config } = require('dotenv');
 const path = require('path');
+console.log("NODE_ENV", process.env._NODE_ENV);
+const envFile = process.env._NODE_ENV === 'production' ? '.env.production' : '.env';
+const envPath = path.resolve(__dirname, envFile);
+
+config({ path: envPath });
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -54,7 +60,7 @@ module.exports = configure(function (/* ctx */) {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
-      env: require('dotenv').config().parsed,
+      env: require('dotenv').config({ path: envPath }).parsed,
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,

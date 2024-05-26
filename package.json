@@ -6,7 +6,10 @@
   "author": "rpoovendrapandi@outlook.com",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "build": "quasar build",
+    "dev": "quasar dev",
+    "build:production": "SET _NODE_ENV=production quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.7",

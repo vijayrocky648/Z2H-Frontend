@@ -132,8 +132,12 @@ const filter = ref("");
 const showFilter = ref(false);
 
 // Functions
-const closeNewUserPopup = () => {
+const closeNewUserPopup = (refreshWebUsers) => {
   openNewUserPopup.value = false;
+
+  if (refreshWebUsers === true) {
+    webUsersList();
+  }
 };
 
 const showLoader = () => {
