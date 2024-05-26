@@ -186,16 +186,12 @@
 import { ref, onMounted, watch } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
-import { useGeneralStore } from "src/stores/general";
-import { storeToRefs } from "pinia";
 
 // Store Initialization
 const userStore = useUserStore();
-const generalStore = useGeneralStore();
 
 // Variable Initializations
 const $q = useQuasar();
-const { selectedPage } = storeToRefs(generalStore);
 let columnsData = [
   {
     name: "name",
@@ -330,7 +326,6 @@ watch(selected, (value) => {
 
 // Lifecycle Hooks
 onMounted(() => {
-  selectedPage.value = "Customers";
   customersList();
 });
 </script>

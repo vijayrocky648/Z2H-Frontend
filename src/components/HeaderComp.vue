@@ -31,9 +31,13 @@
 import { computed } from "vue";
 import { useGeneralStore } from "src/stores/general";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
 // Store Initialization
 const generalStore = useGeneralStore();
+
+// Route Initialization
+const route = useRoute();
 
 // Props
 const props = defineProps({
@@ -48,6 +52,22 @@ const { selectedPage } = storeToRefs(generalStore);
 
 // Computed
 const pageTitle = computed(() => {
+  let routeName = route.name;
+
+  if (routeName === "users") {
+    selectedPage.value = "Users";
+  } else if (routeName === "user-settings") {
+    selectedPage.value = "User Settings";
+  } else if (routeName === "customer-settings") {
+    selectedPage.value = "Customer Settings";
+  } else if (routeName === "main") {
+    selectedPage.value = "Dashboard";
+  } else if (routeName === "customers") {
+    selectedPage.value = "Customers";
+  } else if (routeName === "orders") {
+    selectedPage.value = "Orders";
+  }
+
   return `Zero To Hero / ${selectedPage.value}`;
 });
 </script>

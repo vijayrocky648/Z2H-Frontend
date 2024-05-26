@@ -11,30 +11,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useQuasar } from "quasar";
 import HeaderComp from "src/components/HeaderComp.vue";
 import SideNavBar from "src/components/SideNavBar.vue";
-import { useGeneralStore } from "src/stores/general";
-import { storeToRefs } from "pinia";
-
-// Store Initialization
-const generalStore = useGeneralStore();
 
 // Variable Initialization
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
-const { selectedPage } = storeToRefs(generalStore);
 
 // Functions
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
-
-// Lifecycle Hooks
-onMounted(() => {
-  selectedPage.value = "Dashboard";
-});
 </script>
 
 <style>

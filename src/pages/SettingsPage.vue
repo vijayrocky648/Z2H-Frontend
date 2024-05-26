@@ -44,25 +44,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import UserSettingsTab from "src/components/tabs/UserSettingsTab.vue";
 import DistiributorSettingsTab from "src/components/tabs/DistiributorSettingsTab.vue";
-import { useGeneralStore } from "src/stores/general";
-import { storeToRefs } from "pinia";
 
 // Route Initialization
 const route = useRoute();
-const generalStore = useGeneralStore();
 
 // variable Initialization
 const tab = ref("userSettings");
-const { selectedPage } = storeToRefs(generalStore);
-
-// Lifecycle Hooks
-onMounted(() => {
-  selectedPage.value = "Settings";
-});
 </script>
 
 <style scoped>
