@@ -14,10 +14,16 @@
   </div>
 
   <div style="margin-top: 100px" class="q-ml-md q-mr-lg">
-    <q-btn color="green" class="q-mb-md" no-caps @click="excelExport">
+    <q-btn
+      color="green"
+      class="q-mb-md"
+      style="width: 20px"
+      no-caps
+      @click="excelExport"
+    >
       <div class="row justify-start items-center">
         <q-icon name="fas fa-file-excel" />
-        <span class="q-ml-sm">Export</span>
+        <span class="q-ml-sm"></span>
       </div>
     </q-btn>
     <q-table
