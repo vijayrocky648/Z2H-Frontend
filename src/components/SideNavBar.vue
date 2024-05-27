@@ -36,7 +36,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item
+      <!-- <q-item
         v-if="showOrdersPage"
         to="/orders"
         active-class="q-item-no-link-highlighting"
@@ -46,6 +46,15 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>Orders</q-item-label>
+        </q-item-section>
+      </q-item> -->
+
+      <q-item active-class="q-item-no-link-highlighting">
+        <q-item-section avatar>
+          <q-icon name="shopping_cart" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Reg Payments</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -62,14 +71,82 @@
         </q-item-section>
       </q-item>
 
-      <q-item v-if="showReportsPage" active-class="q-item-no-link-highlighting">
+      <q-item active-class="q-item-no-link-highlighting" class="report-icon">
         <q-item-section avatar>
-          <q-icon name="insert_chart" />
+          <q-icon name="fas fa-percent" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Reports</q-item-label>
+          <q-item-label>Commission</q-item-label>
         </q-item-section>
       </q-item>
+
+      <q-expansion-item
+        v-if="showReportsPage"
+        icon="insert_chart"
+        label="Reports"
+      >
+        <q-list class="q-pl-lg">
+          <q-item
+            active-class="q-item-no-link-highlighting"
+            class="report-icon"
+          >
+            <q-item-section avatar>
+              <q-icon name="fas fa-bullhorn" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Sales</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            active-class="q-item-no-link-highlighting"
+            class="report-icon"
+          >
+            <q-item-section avatar>
+              <q-icon name="fas fa-angle-down" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>No Downline</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            active-class="q-item-no-link-highlighting"
+            class="report-icon"
+          >
+            <q-item-section avatar>
+              <q-icon name="fas fa-percent" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Commission</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            active-class="q-item-no-link-highlighting"
+            class="report-icon"
+          >
+            <q-item-section avatar>
+              <q-icon name="fas fa-file-invoice" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Sales Tax</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            active-class="q-item-no-link-highlighting"
+            class="report-icon"
+          >
+            <q-item-section avatar>
+              <q-icon name="fas fa-money-bill" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Income Tax</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-expansion-item>
 
       <q-item
         v-if="showSettingsPage"
@@ -182,3 +259,9 @@ const logout = () => {
   userStore.logoutUser();
 };
 </script>
+
+<style>
+.report-icon .q-item__section--side > .q-icon {
+  font-size: 19px;
+}
+</style>

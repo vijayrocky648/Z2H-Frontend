@@ -205,7 +205,7 @@ let columnsData = [
   { name: "dob", label: "Date of birth", field: "date_of_birth" },
   { name: "gender", label: "Gender", field: "gender", sortable: true },
   { name: "plan", label: "Plan Name", field: "plan" },
-  { name: "planStartDate", label: "Plan Start Date", field: "plan_start_date" },
+  { name: "planStartDate", label: "Customer Registration Date", field: "plan_start_date" },
   {
     name: "mobileNumber",
     label: "Mobile Number",
