@@ -278,7 +278,7 @@
                 dense
                 autofocus
                 placeholder="Enter an account number"
-                maxlength="128"
+                maxlength="64"
                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                 :rules="[
                   (val) => dataEnteredValidation(val) || 'Field is required!!!',
@@ -292,7 +292,7 @@
                 dense
                 autofocus
                 placeholder="Enter name as in bank"
-                maxlength="128"
+                maxlength="256"
                 :rules="[
                   (val) => dataEnteredValidation(val) || 'Field is required!!!',
                 ]"
