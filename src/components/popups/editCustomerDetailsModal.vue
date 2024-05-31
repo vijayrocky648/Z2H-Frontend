@@ -180,10 +180,13 @@
 
 <script setup>
 import { computed, ref, onMounted, watch } from "vue";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
+import { useUserStore } from "src/stores/user";
 
 // Store Initialization
 const generalStore = useGeneralStore();
+const userStore = useUserStore();
 
 // Variable Initialization
 const bankAccountNumber = ref(props.selectedData[0].account_number);
@@ -200,6 +203,7 @@ const state = ref(props.selectedData[0].state);
 const dirstrictList = ref([]);
 const district = ref("");
 const userStatus = ref(props.selectedData[0].user_status);
+const $q = useQuasar();
 
 //Props
 const props = defineProps({
@@ -241,6 +245,13 @@ const getChosenStateUid = computed(() => {
   return chosenState.uid;
 });
 
+const getChosenDistrictId = computed(() => {
+  let chosenDistrict = dirstrictList.value?.find(
+    (data) => data.name == district.value
+  );
+  return chosenDistrict.id;
+});
+
 const validateSave = computed(() => {
   let isNameOfBankCorrect = dataEnteredValidation(nameOfBank.value);
   let isBankAccountNumberCorrect = dataEnteredValidation(
@@ -268,6 +279,20 @@ const validateSave = computed(() => {
 });
 
 // Functions
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
+    messageColor: "white",
+    backgroundColor: "light-blue",
+    message: "",
+  });
+};
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
 const validateIFSCCode = (ifscCode) => {
   const ifscRegex = /^[A-Z]{4}0([A-Z0-9]{6})$/;
   return ifscRegex.test(ifscCode.toUpperCase());
@@ -277,8 +302,8 @@ const pinCodeValidation = (pinCode) => {
   return pinCode.toString().length == 6;
 };
 
-const closeModal = (refreshData = false) => {
-  props.closeEditCustomerPopup(refreshData);
+const closeModal = (refreshCustomers) => {
+  props.closeEditCustomerPopup(refreshCustomers);
 };
 
 const getAllStates = () => {
@@ -303,7 +328,47 @@ const dataEnteredValidation = (data) => {
   return data.trim().length > 2;
 };
 
-const updateCustomerDetails = () => {};
+const updateCustomerDetails = () => {
+  showLoader();
+
+  let payload = {
+    customerUid: props.selectedData[0].customer_uid,
+    bankName: nameOfBank.value,
+    bankAccountNumber: bankAccountNumber.value,
+    nameAsInBank: nameAsInBank.value,
+    bankBranch: bankBranch.value,
+    ifscCode: ifscCode.value,
+    city: city.value,
+    town: town.value,
+    address: address.value,
+    pinCode: pinCode.value,
+    userStatus: userStatus.value,
+    district: getChosenDistrictId.value,
+  };
+
+  userStore
+    .updateCustomerDetails(payload)
+    .then((res) => {
+      $q.notify({
+        message: "Customer Details Updated Successfully!!!",
+        type: "positive",
+        position: "top",
+      });
+
+      closeModal(true);
+    })
+    .catch((err) => {
+      $q.notify({
+        message:
+          "Error in updating customer details. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    });
+};
 
 // Watchers
 watch(state, (value) => {

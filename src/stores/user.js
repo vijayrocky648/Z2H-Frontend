@@ -50,5 +50,10 @@ export const useUserStore = defineStore("user", {
       let url = `/api/z2h/user/customer/customer_details/`;
       return api.get(url, { params: { customer_uid: customerUid } });
     },
+
+    updateCustomerDetails(payload) {
+      let url = `/api/z2h/user/register/`;
+      return api.put(url, payload);
+    }
   },
 });

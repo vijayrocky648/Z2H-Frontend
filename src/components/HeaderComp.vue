@@ -65,7 +65,7 @@ const pageTitle = computed(() => {
   } else if (routeName === "customers") {
     selectedPage.value = "Customers";
   } else if (routeName === "orders") {
-    selectedPage.value = "Orders";
+    selectedPage.value = "Registration Payments";
   } else if (routeName === "products") {
     selectedPage.value = "Products";
   }

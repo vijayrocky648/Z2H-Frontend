@@ -1,7 +1,7 @@
 <template>
   <div class="row q-pt-md q-ml-lg">
     <div class="col-2">
-      <p style="color: #123499" class="text-bold">From Order Date</p>
+      <p style="color: #123499" class="text-bold">From Date</p>
       <q-input
         v-model="orderFromDate"
         style="max-width: 150px"
@@ -12,7 +12,7 @@
       />
     </div>
     <div class="col-2">
-      <p style="color: #123499" class="text-bold">To Order Date</p>
+      <p style="color: #123499" class="text-bold">To Date</p>
       <q-input
         v-model="orderToDate"
         style="max-width: 150px"
@@ -23,7 +23,7 @@
       />
     </div>
     <div class="col-2">
-      <p style="color: #123499" class="text-bold">Order Status</p>
+      <p style="color: #123499" class="text-bold">Courier Status</p>
       <q-select
         filled
         style="width: 200px; max-height: 100px"
@@ -93,7 +93,7 @@
       class="q-mt-md"
       color="primary"
       label="Edit"
-      :disable="!selected.length"
+      :disable="!selected.length || selected[0].order_status === 'Delivered'"
       @click="editOrderDetails"
     />
   </div>
@@ -168,12 +168,12 @@ let columnsData = [
   { name: "courierDate", label: "Courier Date", field: "courier_date" },
   {
     name: "deliveryThrough",
-    label: "Courier Name",
+    label: "Courier Company Name",
     field: "delivery_through",
   },
   {
     name: "deliveryNumber",
-    label: "Courier Number",
+    label: "Courier Tracking Number",
     field: "delivery_number",
   },
   {
@@ -195,9 +195,9 @@ let columnsDataOrderItems = [
   {
     name: "uid",
     required: true,
-    label: "Order Id",
+    label: "Order Item Id",
     align: "left",
-    field: (row) => row.uid,
+    field: (row) => row.order_item_number,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -270,12 +270,12 @@ const rowsOrderItems = ref([]);
 const selected = ref([]);
 const filter = ref("");
 const showFilter = ref(false);
-const orderStatus = ref("Pending");
+const orderStatus = ref("Yet to be Couriered");
 const orderFromDate = ref("");
 const orderToDate = ref("");
 let orderStatusData = [
-  { label: "pending", name: "Pending" },
-  { label: "couriered", name: "Couriered" },
+  { label: "yet_to_be_couriered", name: "Yet to be Couriered" },
+  { label: "in_transit", name: "In transit" },
   { label: "delivered", name: "Delivered" },
   { label: "cancelled", name: "Cancelled" },
 ];
@@ -283,6 +283,13 @@ let orderStatusData = [
 // Computed
 const orderStatusOptions = computed(() => {
   return orderStatusData.map((orderStatus) => orderStatus.name);
+});
+
+const getOrderStatus = computed(() => {
+  let requiredOrderStatus = orderStatusData.find(
+    (order) => order.name === orderStatus.value
+  );
+  return requiredOrderStatus.label;
 });
 
 // Functions
@@ -318,7 +325,7 @@ const ordersList = () => {
   let queryParams = {
     fromDate: orderFromDate.value == "" ? null : orderFromDate.value,
     toDate: orderToDate.value == "" ? null : orderToDate.value,
-    orderStatus: orderStatus.value,
+    orderStatus: getOrderStatus.value,
   };
   generalStore
     .getOrders(queryParams)
@@ -339,7 +346,6 @@ const displayOrderItems = () => {
     (order) => order.order_id === selected.value[0].order_id
   ).order_items;
 
-  console.log("requiredOrderItems", requiredOrderItems);
   rowsOrderItems.value = requiredOrderItems;
 };
 
@@ -360,7 +366,8 @@ const getSearchData = () => {
 };
 
 const excelExport = () => {
-  let fileName = `${orderStatus.value}_orders.xlsx`;
+  let orderStatusReplacedSpaces = orderStatus.value.replace(/ /g, "_");
+  let fileName = `${orderStatusReplacedSpaces}_registration_payments.xlsx`;
 
   let requiredData = [];
 
@@ -377,8 +384,8 @@ const excelExport = () => {
       "Order Total Amount": row.order_total_amount,
       "Order Status": row.order_status,
       "Courier Date": row.courier_date,
-      "Courier Name": row.delivery_through,
-      "Courier Number": row.delivery_number,
+      "Courier Company Name": row.delivery_through,
+      "Courier Tracking Number": row.delivery_number,
       "Delivery Address": row.delivery_address,
       "Delivery Date": row.delivery_date,
       "Payment Mode": row.payment_mode,

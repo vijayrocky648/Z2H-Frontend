@@ -34,21 +34,21 @@
               type="date"
               :disable="disableCourierDate"
             />
-            <div class="text-bold q-mt-sm">Courier Number</div>
+            <div class="text-bold q-mt-md">Courier Tracking Number</div>
             <q-input
               v-model="deliveryNumber"
               style="max-width: 400px"
               outlined
               dense
               autofocus
-              placeholder="Enter a Courier Number"
+              placeholder="Enter a Courier Tracking Number"
               maxlength="128"
               :rules="[
                 (val) => dataEnteredValidation(val) || 'Field is required!!!',
               ]"
               :disable="disableCourierNumber"
             />
-            <div class="text-bold q-mt-sm">Name of the Courier</div>
+            <div class="text-bold q-mt-xs">Name of the Courier</div>
             <q-input
               v-model="deliveryName"
               style="max-width: 400px"
@@ -62,7 +62,7 @@
               ]"
               :disable="disableNameOfCourier"
             />
-            <div class="text-bold q-mt-sm">Delivery Address</div>
+            <div class="text-bold q-mt-xs">Delivery Address</div>
             <q-input
               v-model="deliveryAddress"
               type="textarea"
@@ -78,7 +78,7 @@
               ]"
               :disable="disbaleDeliveryAddress"
             />
-            <div class="text-bold q-mt-sm">Order Status</div>
+            <div class="text-bold q-mt-xs">Order Status</div>
             <q-select
               style="width: 320px"
               filled
@@ -141,8 +141,8 @@ const deliveryName = ref(props.selectedData[0].delivery_through);
 const deliveryAddress = ref(props.selectedData[0].delivery_address);
 const orderStatus = ref(props.selectedData[0].order_status);
 let orderStatusData = [
-  { label: "pending", name: "Pending" },
-  { label: "couriered", name: "Couriered" },
+  { label: "yet_to_be_couriered", name: "Yet to be Couriered" },
+  { label: "in_transit", name: "In Transit" },
   { label: "delivered", name: "Delivered" },
   { label: "cancelled", name: "Cancelled" },
 ];
@@ -158,24 +158,24 @@ const orderStatusOptions = computed(() => {
 });
 
 const disableDeliveryDate = computed(() => {
-  let disableStatusArray = ["Pending", "Delivered", "Cancelled"];
+  let disableStatusArray = ["Yet to be Couriered", "Delivered", "Cancelled"];
   return disableStatusArray.includes(props.selectedData[0].order_status);
 });
 
 const disableCourierDate = computed(() => {
-  return props.selectedData[0].order_status !== "Pending";
+  return props.selectedData[0].order_status !== "Yet to be Couriered";
 });
 
 const disableCourierNumber = computed(() => {
-  return props.selectedData[0].order_status === "Couriered";
+  return props.selectedData[0].order_status === "In Transit";
 });
 
 const disableNameOfCourier = computed(() => {
-  return props.selectedData[0].order_status === "Couriered";
+  return props.selectedData[0].order_status === "In Transit";
 });
 
 const disbaleDeliveryAddress = computed(() => {
-  return props.selectedData[0].order_status === "Couriered";
+  return props.selectedData[0].order_status === "In Transit";
 });
 
 const getOrderStatus = computed(() => {
@@ -190,8 +190,8 @@ const validateSave = computed(() => {
   let isDeliveryNumberValid = dataEnteredValidation(deliveryNumber.value);
   let isDeliveryNameValid = dataEnteredValidation(deliveryName.value);
   let isDeliveryAddressValid = dataEnteredValidation(deliveryAddress.value);
-  let isOrderStatusPending = orderStatus.value === "Pending";
-  let isOrderStatusCouriered = orderStatus.value === "Couriered";
+  let isOrderStatusPending = orderStatus.value === "Yet to be Couriered";
+  let isOrderStatusCouriered = orderStatus.value === "In Transit";
   let isOrderStatusDelivered = orderStatus.value === "Delivered";
   let isCourierDateValid = isOrderStatusCouriered && courierDate.value;
   let isDeliveryDateValid = isOrderStatusDelivered && deliveryDate.value;
@@ -205,7 +205,7 @@ const validateSave = computed(() => {
   }
 
   if (
-    props.selectedData[0].order_status === "Couriered" &&
+    props.selectedData[0].order_status === "In Transit" &&
     !deliveryDate.value
   ) {
     return true;
@@ -254,11 +254,11 @@ const dataEnteredValidation = (data) => {
 const updateOrderStatusData = () => {
   let selectedDataOrderStatus = props.selectedData[0].order_status;
 
-  if (selectedDataOrderStatus === "Pending") {
+  if (selectedDataOrderStatus === "Yet to be Couriered") {
     return;
   }
 
-  if (selectedDataOrderStatus === "Couriered") {
+  if (selectedDataOrderStatus === "In Transit") {
     orderStatusData = [
       { label: "delivered", name: "Delivered" },
       { label: "cancelled", name: "Cancelled" },
@@ -291,7 +291,7 @@ const updateOrderStatus = () => {
     order_status: getOrderStatus.value,
   };
   generalStore
-    .updateOrders(payload, props.selectedData[0].order_id)
+    .updateOrders(payload, props.selectedData[0].uid)
     .then((res) => {
       closeModal(true);
       $q.notify({

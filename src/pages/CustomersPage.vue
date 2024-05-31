@@ -427,10 +427,9 @@ const editCustomerDetails = () => {
   openEditCustomerPopup.value = true;
 };
 
-const closeEditCustomerPopup = (refreshData = false) => {
+const closeEditCustomerPopup = (refreshCustomers) => {
   openEditCustomerPopup.value = false;
-
-  if (refreshData === true) {
+  if (refreshCustomers === true) {
     selected.value = [];
     customersList();
   }
@@ -460,8 +459,6 @@ const customersList = () => {
 
         requiredArray.push(dataAdded);
       }
-
-      console.log("requiredArray", requiredArray);
 
       rows.value = requiredArray;
     })
