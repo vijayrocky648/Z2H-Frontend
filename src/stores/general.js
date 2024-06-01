@@ -8,6 +8,7 @@ export const useGeneralStore = defineStore("general", {
     planDetails: [],
     orders: [],
     selectedPage: '',
+    productCategories: [],
   }),
   getters: {},
   actions: {
@@ -62,6 +63,27 @@ export const useGeneralStore = defineStore("general", {
     updateOrders(payload, OrderUid) {
       let url = `/api/z2h/app/orders/${OrderUid}/`;
       return api.patch(url, payload);
+    },
+
+    getProductCategories() {
+      let url = "/api/z2h/app/product_categories/";
+      return api.get(url).then((res) => {
+        this.productCategories = res.data;
+      });
+    },
+
+    createProductCategory(payload) {
+      let url = "/api/z2h/app/product_categories/";
+      return api.post(url, payload).then((res) => {
+        this.productCategories.push(res.data);
+      });
+    },
+
+    createProductSubCategory(payload) {
+      let url = "/api/z2h/app/product_sub_categories/";
+      return api.post(url, payload).then((res) => {
+        console.log(res.data);
+      });
     }
   }
 })
