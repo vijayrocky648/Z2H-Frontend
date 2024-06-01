@@ -8,12 +8,12 @@
         align="left"
         active-color="blue-10"
       >
-        <q-route-tab
+        <!-- <q-route-tab
           to="/user-settings"
           class="text-capitalize q-px-xl bg-white top-borders-rounded"
           name="userSettings"
           label="User"
-        />
+        /> -->
         <q-route-tab
           to="/customer-settings"
           class="text-capitalize q-px-xl bg-white top-borders-rounded"

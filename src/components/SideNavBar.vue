@@ -38,7 +38,7 @@
 
       <q-item
         v-if="showOrdersPage"
-        to="/orders"
+        to="/registration-payments"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>

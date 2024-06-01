@@ -33,8 +33,8 @@ const routes = [
         component: () => import("src/pages/CustomersPage.vue")
       },
       {
-        path: "/orders",
-        name: "orders",
+        path: "/registration-payments",
+        name: "registrationPayments",
         component: () => import("src/pages/OrdersPage.vue")
       },
       {

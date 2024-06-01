@@ -151,6 +151,18 @@ let columnsData = [
   },
   { name: "customerName", label: "Customer Name", field: "customer_name" },
   { name: "mobileNumber", label: "Mobile Number", field: "mobile_number" },
+  { name: "referrerId", label: "Referrer Id", field: "referrer_id" },
+  { name: "referrerName", label: "Referrer Name", field: "referrer_name" },
+  {
+    name: "referrerMobileNumber",
+    label: "Referrer Mobile Number",
+    field: "referrer_mobile_number",
+  },
+  {
+    name: "totalProductPrice",
+    label: "Total Product Price",
+    field: "total_product_price",
+  },
   { name: "cgst", label: "CGST Amount", field: "order_cgst_amount" },
   { name: "sgst", label: "SGST Amount", field: "order_sgst_amount" },
   { name: "igst", label: "IGST Amount", field: "order_igst_amount" },
@@ -366,6 +378,7 @@ const getSearchData = () => {
 };
 
 const excelExport = () => {
+  showLoader();
   let orderStatusReplacedSpaces = orderStatus.value.replace(/ /g, "_");
   let fileName = `${orderStatusReplacedSpaces}_registration_payments.xlsx`;
 
@@ -377,6 +390,10 @@ const excelExport = () => {
       "Order Date": row.order_date,
       "Customer Name": row.customer_name,
       "Mobile Number": row.mobile_number,
+      "Referrer Id": row.referrer_id,
+      "Referrer Name": row.referrer_name,
+      "Referrer Mobile Number": row.referrer_mobile_number,
+      "Total Product Price": row.total_product_price,
       "CGST Amount": row.order_cgst_amount,
       "SGST Amount": row.order_sgst_amount,
       "IGST Amount": row.order_igst_amount,
@@ -397,6 +414,7 @@ const excelExport = () => {
   }
 
   exportToExcel(requiredData, fileName);
+  hideLoader();
 };
 
 // Watchers
