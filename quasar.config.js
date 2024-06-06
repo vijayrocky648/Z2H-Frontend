@@ -12,8 +12,8 @@
 const { configure } = require('quasar/wrappers');
 const { config } = require('dotenv');
 const path = require('path');
-console.log("NODE_ENV", process.env._NODE_ENV);
-const envFile = process.env._NODE_ENV === 'production' ? '.env.production' : '.env';
+console.log("NODE_ENV", process.env.NODE_ENV);
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
 const envPath = path.resolve(__dirname, envFile);
 
 config({ path: envPath });
