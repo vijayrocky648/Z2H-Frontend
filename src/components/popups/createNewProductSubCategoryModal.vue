@@ -116,12 +116,29 @@ const getProductCategoryId = computed(() => {
   let chosenProductCategory = productCategories.value?.find(
     (item) => item.name === productCategory.value
   );
-  console.log("chosenProductCategory", chosenProductCategory);
+
   return chosenProductCategory.id;
 });
 
+const getProductCategoryUid = computed(() => {
+  let chosenProductCategory = productCategories.value?.find(
+    (item) => item.name === productCategory.value
+  );
+
+  return chosenProductCategory.uid;
+});
+
 const validateSave = computed(() => {
-  return false;
+  let isProductSubCategoryNameValid = dataEnteredValidation(
+    productSubCategoryName.value
+  );
+  let isProductSubCategoryDescriptionValid = dataEnteredValidation(
+    productSubCategoryDescription.value
+  );
+
+  return (
+    !isProductSubCategoryNameValid || !isProductSubCategoryDescriptionValid
+  );
 });
 
 // Funtions
@@ -158,7 +175,28 @@ const createProductSubCategoryDetails = () => {
 
   console.log("payload", payload);
 
-  hideLoader();
+  generalStore
+    .createProductSubCategory(payload, getProductCategoryUid.value)
+    .then((res) => {
+      $q.notify({
+        message: "Product Sub Category Created Successfully!!!",
+        type: "positive",
+        position: "top",
+      });
+
+      closeModal();
+    })
+    .catch((err) => {
+      $q.notify({
+        message:
+          "Error in updating Product Sub Category. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 
 onMounted(() => {

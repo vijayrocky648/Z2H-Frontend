@@ -65,24 +65,31 @@ export const useGeneralStore = defineStore("general", {
       return api.patch(url, payload);
     },
 
-    getProductCategories() {
+    async getProductCategories() {
       let url = "/api/z2h/app/product_categories/";
-      return api.get(url).then((res) => {
+      return await api.get(url).then((res) => {
         this.productCategories = res.data;
       });
     },
 
-    createProductCategory(payload) {
+    async createProductCategory(payload) {
       let url = "/api/z2h/app/product_categories/";
-      return api.post(url, payload).then((res) => {
+      return await api.post(url, payload).then((res) => {
         this.productCategories.push(res.data);
       });
     },
 
-    createProductSubCategory(payload) {
-      let url = "/api/z2h/app/product_sub_categories/";
-      return api.post(url, payload).then((res) => {
-        console.log(res.data);
+    async createProductSubCategory(payload, productCategoryUid) {
+      let url = `/api/z2h/app/product_sub_categories/${productCategoryUid}/`;
+      return await api.post(url, payload).then((res) => {
+        this.productCategories.find((x) => x.uid === productCategoryUid).sub_categories.push(res.data);
+      });
+    },
+
+    createProductImageUrls(payload) {
+      let url = "/api/z2h/utils/image_upload/";
+      return api.post(url, payload, {
+        headers: { 'Content-Type': "multipart/form-data" },
       });
     }
   }
