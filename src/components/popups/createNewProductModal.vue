@@ -39,6 +39,19 @@
                 (val) => dataEnteredValidation(val) || 'Field is required!!!',
               ]"
             />
+            <div class="text-bold">HSN Code</div>
+            <q-input
+              v-model="hsnCode"
+              style="max-width: 400px"
+              outlined
+              dense
+              autofocus
+              placeholder="Enter a HSN Code"
+              maxlength="64"
+              :rules="[
+                (val) => dataEnteredValidation(val) || 'Field is required!!!',
+              ]"
+            />
             <div class="text-bold">Product Category</div>
             <q-select
               style="width: 400px"
@@ -84,6 +97,7 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import { storeToRefs } from "pinia";
 
@@ -95,9 +109,11 @@ const productName = ref("");
 const productDescription = ref("");
 const productCategory = ref("");
 const productSubCategory = ref("");
+const hsnCode = ref("");
 const productSubCategoryOptions = ref([]);
 const productImages = ref(null);
 const productImageUrls = ref([]);
+const $q = useQuasar();
 
 const { productCategories } = storeToRefs(generalStore);
 
@@ -129,6 +145,17 @@ const productCategoryOptions = computed(() => {
   return productCategoriesNames;
 });
 
+const getChosenProductSubCategoryUid = computed(() => {
+  let chosenProductCategory = productCategories.value?.find(
+    (item) => item.name === productCategory.value
+  );
+  let chosenProductSubCategory = chosenProductCategory.sub_categories.find(
+    (item) => item.name === productSubCategory.value
+  );
+
+  return chosenProductSubCategory.uid;
+});
+
 const validateSave = computed(() => {
   let isProductNameValid = dataEnteredValidation(productName.value);
   let isProductDescriptionValid = dataEnteredValidation(
@@ -142,6 +169,20 @@ const validateSave = computed(() => {
 });
 
 // Functions
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
+    messageColor: "white",
+    backgroundColor: "light-blue",
+    message: "",
+  });
+};
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
 const closeModal = (refreshProducts) => {
   props.closeNewProductPopup(refreshProducts);
 };
@@ -160,24 +201,66 @@ const updateProductSubCategoryOptions = (data) => {
   );
 };
 
-const createNewProduct = () => {
-  console.log("productImages.value", productImages.value);
+const createProduct = () => {
+  console.log("Here");
+  showLoader();
+
   let payload = {
-    file_name: productImages.value,
-    upload_type: "test",
+    productName: productName.value,
+    productDescription: productDescription.value,
+    hsnCode: hsnCode.value,
+    productImageUrls: productImageUrls.value,
   };
 
+  generalStore
+    .createProduct(payload, getChosenProductSubCategoryUid.value)
+    .then((res) => {
+      console.log("res", res);
+      closeModal(true);
+      $q.notify({
+        message: "Product Created Successfully!!!",
+        type: "positive",
+        position: "top",
+      });
+    })
+    .catch((err) => {
+      console.log("err", err);
+      $q.notify({
+        message: "Something went Wrong. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    })
+    .finally(() => {
+      hideLoader();
+    });
+};
+
+const createNewProduct = () => {
+  showLoader();
   let form = new FormData();
-  form.append("file_name", productImages.value[0]);
-  form.append("file_name", productImages.value[1]);
+
+  for (let image of productImages.value) {
+    form.append("file_name", image);
+  }
+  form.append("upload_type", "product_image");
 
   generalStore
     .createProductImageUrls(form)
     .then((res) => {
-      console.log("res", res);
+      productImageUrls.value = res.data.image_upload_paths;
+      createProduct();
     })
     .catch((err) => {
-      console.log("err", err);
+      console.log("error", err);
+      $q.notify({
+        message: "Something went Wrong. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    })
+    .finally(() => {
+      hideLoader();
     });
 };
 

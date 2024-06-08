@@ -91,6 +91,11 @@ export const useGeneralStore = defineStore("general", {
       return api.post(url, payload, {
         headers: { 'Content-Type': "multipart/form-data" },
       });
+    },
+
+    createProduct(payload, productSubCategoryUid) {
+      let url = `/api/z2h/app/products/${productSubCategoryUid}/add/`;
+      return api.post(url, payload);
     }
   }
 })
