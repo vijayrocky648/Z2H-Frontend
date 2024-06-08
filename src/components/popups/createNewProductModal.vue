@@ -202,7 +202,6 @@ const updateProductSubCategoryOptions = (data) => {
 };
 
 const createProduct = () => {
-  console.log("Here");
   showLoader();
 
   let payload = {
@@ -215,7 +214,6 @@ const createProduct = () => {
   generalStore
     .createProduct(payload, getChosenProductSubCategoryUid.value)
     .then((res) => {
-      console.log("res", res);
       closeModal(true);
       $q.notify({
         message: "Product Created Successfully!!!",
