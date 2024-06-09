@@ -9,6 +9,7 @@ export const useGeneralStore = defineStore("general", {
     orders: [],
     selectedPage: '',
     productCategories: [],
+    products: [],
   }),
   getters: {},
   actions: {
@@ -67,9 +68,12 @@ export const useGeneralStore = defineStore("general", {
 
     async getProductCategories() {
       let url = "/api/z2h/app/product_categories/";
-      return await api.get(url).then((res) => {
-        this.productCategories = res.data;
-      });
+      return await api.get(url);
+    },
+
+    getProducts(productSubCategoryUid) {
+      let url = `/api/z2h/app/products/${productSubCategoryUid}/`;
+      return api.get(url);
     },
 
     async createProductCategory(payload) {
@@ -82,7 +86,10 @@ export const useGeneralStore = defineStore("general", {
     async createProductSubCategory(payload, productCategoryUid) {
       let url = `/api/z2h/app/product_sub_categories/${productCategoryUid}/`;
       return await api.post(url, payload).then((res) => {
-        this.productCategories.find((x) => x.uid === productCategoryUid).sub_categories.push(res.data);
+        let responseData = res.data;
+        let productCategory = this.productCategories.find((x) => x.uid === productCategoryUid);
+        responseData.category_code = productCategory.category_code;
+        this.productCategories.find((x) => x.uid === productCategoryUid).sub_categories.push(responseData);
       });
     },
 
@@ -95,7 +102,9 @@ export const useGeneralStore = defineStore("general", {
 
     createProduct(payload, productSubCategoryUid) {
       let url = `/api/z2h/app/products/${productSubCategoryUid}/add/`;
-      return api.post(url, payload);
+      return api.post(url, payload).then((res) => {
+        this.products.push(res.data);
+      });
     }
   }
 })

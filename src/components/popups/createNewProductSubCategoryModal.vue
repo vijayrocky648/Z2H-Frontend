@@ -173,8 +173,6 @@ const createProductSubCategoryDetails = () => {
     category: getProductCategoryId.value,
   };
 
-  console.log("payload", payload);
-
   generalStore
     .createProductSubCategory(payload, getProductCategoryUid.value)
     .then((res) => {

@@ -250,7 +250,6 @@ const createNewProduct = () => {
       createProduct();
     })
     .catch((err) => {
-      console.log("error", err);
       $q.notify({
         message: "Something went Wrong. Please contact your admin!!!",
         type: "negative",
