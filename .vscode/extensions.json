@@ -4,8 +4,8 @@
     "esbenp.prettier-vscode",
     "editorconfig.editorconfig",
     "vue.volar",
-    "wayou.vscode-todo-highlight",
-    "github.copilot"
+    "wayou.vscode-todo-highlight"
+    // "github.copilot"
   ],
   "unwantedRecommendations": [
     "octref.vetur",

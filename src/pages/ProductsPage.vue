@@ -35,10 +35,28 @@
         <span class="q-ml-sm">New Product</span>
       </div>
     </q-btn>
-    <q-btn color="primary" class="q-mb-md" no-caps :disable="!enableProduct">
+    <q-btn
+      color="primary"
+      class="q-mb-md q-mr-sm"
+      no-caps
+      :disable="!enableProduct"
+      @click="openNewMapPlanProductPopup = true"
+    >
       <div class="row justify-start items-center">
         <q-icon name="add" />
-        <span class="q-ml-sm">Map Plan</span>
+        <span class="q-ml-sm">Map Product Plan</span>
+      </div>
+    </q-btn>
+    <q-btn
+      color="primary"
+      class="q-mb-md"
+      no-caps
+      :disable="!enableProduct"
+      @click="openNewReturnPopup = true"
+    >
+      <div class="row justify-start items-center">
+        <q-icon name="add" />
+        <span class="q-ml-sm">Returns</span>
       </div>
     </q-btn>
   </div>
@@ -58,6 +76,12 @@
         @click="productSubCategoriesClick"
       />
       <q-breadcrumbs-el label="Products" class="text-bold" />
+      <q-breadcrumbs-el
+        label="Returns"
+        style="cursor: pointer"
+        class="text-bold"
+        @click="productReturnsClick"
+      />
     </q-breadcrumbs>
   </div>
 
@@ -136,10 +160,45 @@
       </template>
     </q-table>
 
+    <q-table
+      v-if="enableProductReturnedTable"
+      class="product-returned-table"
+      flat
+      bordered
+      title="Product(s) Returned"
+      :rows="productsReturned"
+      :columns="productReturnedColumns"
+      row-key="id"
+      :filter="filterProductReturned"
+    >
+      <template v-slot:top-right>
+        <q-input
+          v-if="showFilterProductReturned"
+          filled
+          borderless
+          dense
+          debounce="300"
+          v-model="filterProductSubCategory"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <q-btn
+          class="q-ml-sm"
+          icon="filter_list"
+          @click="showFilterProductReturned = !showFilterProductReturned"
+          flat
+        />
+      </template>
+    </q-table>
+
     <div class="row q-col-gutter-sm" v-if="enableProductItems">
       <div
         class="col-md-4 col-lg-4 col-sm-12 col-xs-12"
-        v-for="(item, item_index) in products"
+        v-for="(item, item_index) in displayProducts"
       >
         <product-items :data="item" />
       </div>
@@ -166,6 +225,20 @@
     :show-new-product-sub-category-popup="openNewProductSubCategoryPopup"
     :close-new-product-sub-category-popup="closeNewProductSubCategoryPopup"
   />
+
+  <map-plan-product-modal
+    v-if="openNewMapPlanProductPopup"
+    v-model="openNewMapPlanProductPopup"
+    :show-new-map-plan-popup="openNewMapPlanProductPopup"
+    :close-new-map-plan-popup="closeNewMapPlanPopup"
+  />
+
+  <create-new-product-returns-modal
+    v-if="openNewReturnPopup"
+    v-model="openNewReturnPopup"
+    :show-new-return-popup="openNewReturnPopup"
+    :close-new-return-popup="closeNewReturnPopup"
+  />
 </template>
 
 <script setup>
@@ -174,6 +247,8 @@ import { useQuasar, QSpinnerFacebook } from "quasar";
 import createNewProductModal from "src/components/popups/createNewProductModal.vue";
 import createNewProductCategoryModal from "src/components/popups/createNewProductCategoryModal.vue";
 import createNewProductSubCategoryModal from "src/components/popups/createNewProductSubCategoryModal.vue";
+import mapPlanProductModal from "src/components/popups/mapPlanProductModal.vue";
+import createNewProductReturnsModal from "src/components/popups/createNewProductReturnsModal.vue";
 import productItems from "src/components/ProductItems.vue";
 import { useGeneralStore } from "src/stores/general";
 import { storeToRefs } from "pinia";
@@ -185,6 +260,8 @@ const generalStore = useGeneralStore();
 const openNewProductPopup = ref(false);
 const openNewProductCategoryPopup = ref(false);
 const openNewProductSubCategoryPopup = ref(false);
+const openNewMapPlanProductPopup = ref(false);
+const openNewReturnPopup = ref(false);
 let columnsDataProductCategories = [
   {
     name: "categoryCode",
@@ -249,14 +326,57 @@ let columnsDataProductSubCategories = [
     sortable: true,
   },
 ];
+let columnsDataProductReturned = [
+  {
+    name: "id",
+    required: true,
+    label: "ID",
+    align: "left",
+    field: (row) => row.id,
+    format: (val) => `${val}`,
+  },
+  {
+    name: "productId",
+    label: "Product ID",
+    field: "product_id",
+  },
+  {
+    name: "customerId",
+    label: "Customer ID",
+    field: "customer_id",
+  },
+  {
+    name: "customerName",
+    label: "Customer Name",
+    field: "customer_name",
+  },
+  {
+    name: "mobileNumber",
+    label: "Mobile Number",
+    field: "mobile_number",
+  },
+  {
+    name: "productReturnedDate",
+    label: "Product Returned Date",
+    field: "product_returned_date",
+  },
+  {
+    name: "comments",
+    label: "Comments",
+    field: "comments",
+  },
+];
 const selectedProductCategory = ref([]);
 const selectedProductSubCategory = ref([]);
 const filterProductCategory = ref("");
 const filterProductSubCategory = ref("");
+const filterProductReturned = ref("");
 const showFilterProductCategory = ref(false);
 const showFilterProductSubCategory = ref(false);
+const showFilterProductReturned = ref(false);
 const productCategoryColumns = ref(columnsDataProductCategories);
 const productSubCategoryColumns = ref(columnsDataProductSubCategories);
+const productReturnedColumns = ref(columnsDataProductReturned);
 const productCategoryRows = ref([]);
 const productSubCategoryRows = ref([]);
 const productCategoryLabel = ref("Category");
@@ -264,10 +384,12 @@ const productSubCategoryLabel = ref("Sub Category");
 const enableProductCategoriesTable = ref(true);
 const enableProductSubCategoriesTable = ref(false);
 const enableProductItems = ref(false);
+const enableProductReturnedTable = ref(false);
 
 const $q = useQuasar();
 
-const { productCategories, products } = storeToRefs(generalStore);
+const { productCategories, products, productsReturned } =
+  storeToRefs(generalStore);
 
 // Computed
 const enableProductSubCategories = computed(() => {
@@ -280,6 +402,10 @@ const enableProduct = computed(() => {
     productCategories.value.length &&
     productCategories.value[0].sub_categories.length
   );
+});
+
+const displayProducts = computed(() => {
+  return products.value?.filter((item) => item.product_image_urls.length);
 });
 
 // Functions
@@ -309,6 +435,49 @@ const closeNewProductSubCategoryPopup = () => {
   openNewProductSubCategoryPopup.value = false;
 };
 
+const closeNewMapPlanPopup = (refreshProducts) => {
+  openNewMapPlanProductPopup.value = false;
+
+  if (refreshProducts === true) {
+    productCategoriesClick();
+  }
+};
+
+const closeNewReturnPopup = (refreshProducts) => {
+  openNewReturnPopup.value = false;
+};
+
+const productCategoriesClick = () => {
+  enableProductSubCategoriesTable.value = false;
+  selectedProductCategory.value = [];
+  selectedProductSubCategory.value = [];
+  enableProductItems.value = false;
+  enableProductReturnedTable.value = false;
+  enableProductCategoriesTable.value = true;
+};
+
+const productSubCategoriesClick = () => {
+  enableProductItems.value = false;
+  enableProductReturnedTable.value = false;
+
+  if (enableProductCategoriesTable.value) {
+    return;
+  }
+
+  selectedProductSubCategory.value = [];
+  enableProductSubCategoriesTable.value = true;
+};
+
+const productReturnsClick = () => {
+  enableProductCategoriesTable.value = false;
+  enableProductSubCategoriesTable.value = false;
+  selectedProductCategory.value = [];
+  selectedProductSubCategory.value = [];
+  enableProductItems.value = false;
+  productSubCategoryRows.value = [];
+  enableProductReturnedTable.value = true;
+};
+
 const getProductCategories = () => {
   showLoader();
   generalStore
@@ -323,25 +492,6 @@ const getProductCategories = () => {
     .finally(() => {
       hideLoader();
     });
-};
-
-const productCategoriesClick = () => {
-  enableProductCategoriesTable.value = true;
-  enableProductSubCategoriesTable.value = false;
-  selectedProductCategory.value = [];
-  selectedProductSubCategory.value = [];
-  enableProductItems.value = false;
-};
-
-const productSubCategoriesClick = () => {
-  enableProductItems.value = false;
-
-  if (enableProductCategoriesTable.value) {
-    return;
-  }
-
-  enableProductSubCategoriesTable.value = true;
-  selectedProductSubCategory.value = [];
 };
 
 const getProduct = (subCategory) => {
@@ -385,6 +535,7 @@ watch(selectedProductSubCategory, (value) => {
 // Lifecycle Hooks
 onMounted(() => {
   getProductCategories();
+  generalStore.getProductsReturned();
 });
 </script>
 
@@ -404,6 +555,15 @@ onMounted(() => {
 }
 
 .product-sub-categories-table thead {
+  color: #123499;
+}
+
+.product-returned-table .q-table__title {
+  color: #1a43bf;
+  font-weight: bold;
+}
+
+.product-returned-table thead {
   color: #123499;
 }
 </style>

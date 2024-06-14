@@ -383,7 +383,7 @@ onMounted(() => {
 
 <style scoped>
 .customer-modal {
-  width: 40vw;
+  width: 35vw;
   height: auto;
   max-width: 75vw;
   overflow: hidden;

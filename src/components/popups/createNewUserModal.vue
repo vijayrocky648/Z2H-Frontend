@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="openPopup" persistent @keydown.esc="closeModal">
-    <q-card class="user-modal">
+    <q-card class="user-modal q-pl-md">
       <q-card-section class="row items-center">
         <div class="text-h6 text-bold" style="color: #123499">
           Create New Web User
@@ -756,7 +756,7 @@ onMounted(async () => {
 
 <style scoped>
 .user-modal {
-  width: 60vw;
+  width: 40vw;
   height: auto;
   max-width: 75vw;
   overflow: hidden;

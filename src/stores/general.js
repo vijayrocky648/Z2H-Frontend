@@ -10,6 +10,8 @@ export const useGeneralStore = defineStore("general", {
     selectedPage: '',
     productCategories: [],
     products: [],
+    inactiveProducts: [],
+    productsReturned: [],
   }),
   getters: {},
   actions: {
@@ -105,6 +107,34 @@ export const useGeneralStore = defineStore("general", {
       return api.post(url, payload).then((res) => {
         this.products.push(res.data);
       });
-    }
+    },
+
+    getAllProducts(queryParams) {
+      let url = "/api/z2h/app/products_list/";
+      return api.get(url, {
+        params: queryParams,
+      }).then((res) => {
+        this.inactiveProducts = res.data;
+      });
+    },
+
+    mapProductToPlan(payload) {
+      let url = "/api/z2h/app/products_plan_map/";
+      return api.post(url, payload);
+    },
+
+    createProductReturned(payload) {
+      let url = "/api/z2h/app/products_returned/";
+      return api.post(url, payload).then((res) => {
+        this.productsReturned.push(res.data);
+      });
+    },
+
+    getProductsReturned() {
+      let url = "/api/z2h/app/products_returned/";
+      return api.get(url).then((res) => {
+        this.productsReturned = res.data;
+      });
+    },
   }
 })

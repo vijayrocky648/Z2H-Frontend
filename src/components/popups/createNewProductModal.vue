@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="openPopup" persistent @keydown.esc="closeModal">
-    <q-card class="product-modal">
+    <q-card class="product-modal q-pl-md">
       <q-card-section class="row items-center">
         <div class="text-h6 text-bold" style="color: #123499">
           Create New Product
@@ -269,7 +269,7 @@ watch(productCategory, (value) => {
 
 <style scoped>
 .product-modal {
-  width: 40vw;
+  width: 30vw;
   height: auto;
   max-width: 75vw;
   overflow: hidden;

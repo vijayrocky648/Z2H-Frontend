@@ -4,7 +4,7 @@
     persistent
     @keydown.esc="closeModal"
   >
-    <q-card class="product-category-modal">
+    <q-card class="product-category-modal q-pl-md">
       <q-card-section class="row items-center">
         <div class="text-h6 text-bold" style="color: #123499">
           Create New Product Category
@@ -161,7 +161,7 @@ const createProductCategoryDetails = () => {
 
 <style scoped>
 .product-category-modal {
-  width: 40vw;
+  width: 30vw;
   height: auto;
   max-width: 75vw;
   overflow: hidden;
