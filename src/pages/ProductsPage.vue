@@ -178,7 +178,7 @@
           borderless
           dense
           debounce="300"
-          v-model="filterProductSubCategory"
+          v-model="filterProductReturned"
           placeholder="Search"
         >
           <template v-slot:append>

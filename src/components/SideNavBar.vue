@@ -64,6 +64,7 @@
 
       <q-item
         v-if="showCommissionPage"
+        to="/commissions"
         active-class="q-item-no-link-highlighting"
         class="report-icon"
       >
@@ -71,7 +72,7 @@
           <q-icon name="fas fa-percent" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Commission</q-item-label>
+          <q-item-label>Commissions</q-item-label>
         </q-item-section>
       </q-item>
 
