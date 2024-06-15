@@ -28,6 +28,7 @@
         color="primary"
         label="Search"
         no-caps
+        :disable="validateSearch"
         @click="getCommissionsData"
       />
     </div>
@@ -55,8 +56,6 @@
       :rows="rows"
       :columns="columns"
       row-key="customer_number"
-      selection="single"
-      v-model:selected="selected"
       :filter="filter"
     >
       <template v-slot:top-right>
@@ -86,12 +85,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useQuasar, QSpinnerFacebook } from "quasar";
+import { useUserStore } from "src/stores/user";
+import { exportToExcel } from "src/utils/exportToExcel";
+
+// Store Initialization
+const userStore = useUserStore();
 
 // Variable Initialization
 const commissionFromDate = ref(null);
 const commissionToDate = ref(null);
-const selected = ref([]);
 const filter = ref("");
 const showFilter = ref(false);
 let columnsData = [
@@ -329,9 +333,59 @@ let columnsData = [
 ];
 const columns = ref(columnsData);
 const rows = ref([]);
+const $q = useQuasar();
+
+// Computed
+const validateSearch = computed(() => {
+  return !commissionFromDate.value || !commissionToDate.value;
+});
 
 // Functions
-const getCommissionsData = () => {};
+const showLoader = () => {
+  $q.loading.show({
+    spinner: QSpinnerFacebook,
+    spinnerColor: "light-blue",
+    messageColor: "white",
+    backgroundColor: "light-blue",
+    message: "",
+  });
+};
+
+const hideLoader = () => {
+  $q.loading.hide();
+};
+
+const getCommissionsData = () => {
+  if (commissionToDate.value < commissionFromDate.value) {
+    $q.notify({
+      message:
+        "Commission From Date should be less than or equal to Commission To Date!!!",
+      type: "warning",
+      position: "top",
+    });
+
+    return;
+  }
+
+  showLoader();
+
+  let queryParams = {
+    commission_from_date: commissionFromDate.value,
+    commission_to_date: commissionToDate.value,
+  };
+
+  userStore
+    .getCommissionDetails(queryParams)
+    .then((res) => {
+      rows.value = res.data.commissions;
+    })
+    .catch((err) => {
+      console.log("err", err);
+    })
+    .finally(() => {
+      hideLoader();
+    });
+};
 
 const excelExport = () => {};
 </script>

@@ -131,7 +131,6 @@ const generalStore = useGeneralStore();
 
 // Variable Initializations
 const openNewUserPopup = ref(false);
-const $q = useQuasar();
 const { orders } = storeToRefs(generalStore);
 let columnsData = [
   {
@@ -291,6 +290,7 @@ let orderStatusData = [
   { label: "delivered", name: "Delivered" },
   { label: "cancelled", name: "Cancelled" },
 ];
+const $q = useQuasar();
 
 // Computed
 const orderStatusOptions = computed(() => {
@@ -366,7 +366,7 @@ const getSearchData = () => {
     $q.notify({
       message:
         "Order From Date should be less than or equal to Order To Date!!!",
-      type: "negative",
+      type: "warning",
       position: "top",
     });
 
