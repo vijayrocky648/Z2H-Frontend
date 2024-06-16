@@ -6,7 +6,7 @@ node_modules
 .quasar
 
 # Build
-dist/*
+/dist
 
 # Cordova related directories and files
 /src-cordova/node_modules
