@@ -496,8 +496,13 @@ const getProductCategories = () => {
 
 const getProduct = (subCategory) => {
   showLoader();
+
+  let queryParams = {
+    product_type: "all",
+  };
+
   generalStore
-    .getProducts(subCategory.uid)
+    .getProducts(subCategory.uid, queryParams)
     .then((res) => {
       products.value = res.data;
       enableProductItems.value = true;

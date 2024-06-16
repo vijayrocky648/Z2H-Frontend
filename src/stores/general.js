@@ -73,9 +73,11 @@ export const useGeneralStore = defineStore("general", {
       return await api.get(url);
     },
 
-    getProducts(productSubCategoryUid) {
+    getProducts(productSubCategoryUid, queryParams) {
       let url = `/api/z2h/app/products/${productSubCategoryUid}/`;
-      return api.get(url);
+      return api.get(url, {
+        params: queryParams,
+      });
     },
 
     async createProductCategory(payload) {
