@@ -19,7 +19,7 @@
       title="Customers"
       :rows="rows"
       :columns="columns"
-      row-key="name"
+      row-key="customer_number"
       selection="single"
       v-model:selected="selected"
       :filter="filter"
@@ -223,19 +223,18 @@ const userStore = useUserStore();
 const $q = useQuasar();
 let columnsData = [
   {
-    name: "name",
+    name: "customerNumber",
     required: true,
-    label: "Customer name",
+    label: "Customer Number",
     align: "left",
-    field: (row) => row.name,
+    field: (row) => row.customer_number,
     format: (val) => `${val}`,
     sortable: true,
   },
   {
-    name: "customerNumber",
-    label: "Customer Number",
-    field: "customer_number",
-    sortable: true,
+    name: "name",
+    label: "Customer Name",
+    field: "name",
   },
   { name: "dob", label: "Date of birth", field: "date_of_birth" },
   { name: "gender", label: "Gender", field: "gender" },
@@ -472,7 +471,7 @@ const customersList = () => {
 
 const getCustomersUnderSelectedUser = () => {
   showLoader();
-  let selectedUserUid = selected.value[0].uid;
+  let selectedUserUid = selected.value[0].customer_uid;
   firstLevelTitle.value = `First Level Customers Under ${selected.value[0].name}`;
   secondLevelTitle.value = `Second Level Customers Under ${selected.value[0].name}`;
   thirdLevelTitle.value = `Third Level Customers Under ${selected.value[0].name}`;
