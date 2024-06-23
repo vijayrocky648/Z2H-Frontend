@@ -22,6 +22,24 @@
         type="date"
       />
     </div>
+    <div class="col-1 comp-size">
+      <p style="color: #123499" class="text-bold">Commission Level</p>
+      <q-select
+        filled
+        style="width: 150px"
+        v-model="commissionLevel"
+        :options="commissionLevelOptions"
+      />
+    </div>
+    <div class="col-1 comp-size">
+      <p style="color: #123499" class="text-bold">Status</p>
+      <q-select
+        filled
+        style="width: 150px"
+        v-model="commissionStatus"
+        :options="commissionStatusOptions"
+      />
+    </div>
     <div class="col-1 q-ml-lg q-mt-lg">
       <q-btn
         unelevated
@@ -96,6 +114,10 @@ const userStore = useUserStore();
 // Variable Initialization
 const commissionFromDate = ref(null);
 const commissionToDate = ref(null);
+const commissionStatus = ref("All");
+const commissionLevel = ref("All");
+const commissionStatusOptions = ref(["All", "Paid", "Un Paid"]);
+const commissionLevelOptions = ref(["All", "One", "Two", "Three", "Four"]);
 const filter = ref("");
 const showFilter = ref(false);
 let columnsData = [
@@ -372,6 +394,8 @@ const getCommissionsData = () => {
   let queryParams = {
     commission_from_date: commissionFromDate.value,
     commission_to_date: commissionToDate.value,
+    commission_status: commissionStatus.value,
+    commission_level: commissionLevel.value,
   };
 
   userStore
