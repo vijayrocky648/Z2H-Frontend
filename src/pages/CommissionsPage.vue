@@ -26,6 +26,7 @@
       <p style="color: #123499" class="text-bold">Commission Level</p>
       <q-select
         filled
+        dense
         style="width: 150px"
         v-model="commissionLevel"
         :options="commissionLevelOptions"
@@ -35,7 +36,8 @@
       <p style="color: #123499" class="text-bold">Paid Status</p>
       <q-select
         filled
-        style="width: 150px"
+        dense
+        style="width: 200px"
         v-model="commissionStatus"
         :options="commissionStatusOptions"
       />
@@ -259,6 +261,14 @@
             flat
             color="primary"
             @click="editRow(props)"
+            icon="info"
+          ></q-btn>
+          <q-btn
+            dense
+            round
+            flat
+            color="primary"
+            @click="editRow(props)"
             icon="edit"
           ></q-btn>
         </q-td>
@@ -281,7 +291,12 @@ const commissionFromDate = ref(null);
 const commissionToDate = ref(null);
 const commissionStatus = ref("All");
 const commissionLevel = ref("All");
-const commissionStatusOptions = ref(["All", "Paid", "Unpaid"]);
+const commissionStatusOptions = ref([
+  "All",
+  "Paid",
+  "Yet to be paid",
+  "Issue with payments",
+]);
 const commissionLevelOptions = ref(["All", "One", "Two", "Three", "Four"]);
 const filter = ref("");
 const showFilter = ref(false);
@@ -361,201 +376,201 @@ let columnsData = [
   },
   {
     name: "levelOneCompletionStatus",
-    label: "Level One Completion Status",
+    label: "Completion (1st)",
     field: "level_one_completion_status",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelOneCompletionDate",
-    label: "Level One Completion Date",
+    label: "Completion Date (1st)",
     field: "level_one_completion_date",
     align: "left",
   },
   {
     name: "levelOneCommissionAmount",
-    label: "Level One Commission Amount",
+    label: "Commission Amount (1st) (Rs.)",
     field: "level_one_commission_amount",
     align: "center",
   },
   {
     name: "levelOneTdsAmount",
-    label: "Level One TDS Amount (10%)",
+    label: "TDS Amount (1st) (10%) (Rs.)",
     field: "level_one_tds_amount",
     align: "center",
   },
   {
     name: "levelOneAmountPayable",
-    label: "Level One Amount Payable",
+    label: "Amount Payable (1st) (Rs.)",
     field: "level_one_amount_payable",
     align: "center",
   },
   {
     name: "levelOneCommissionPaidStatus",
-    label: "Level One Commission Payment Status",
+    label: "Commission Payment (1st)",
     field: "level_one_commission_paid_status",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelOneCommisionPaidDate",
-    label: "Level One Commission Paid Date",
+    label: "Commission Paid Date (1st)",
     field: "level_one_commission_paid_date",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelOneCommissionPaymentComments",
-    label: "Level One Commission Payment Comments",
+    label: "Commission Payment Comments (1st)",
     field: "level_one_commission_payment_comments",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelTwoCompletionStatus",
-    label: "Level Two Completion Status",
+    label: "Completion (2nd)",
     field: "level_two_completion_status",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelTwoCompletionDate",
-    label: "Level Two Completion Date",
+    label: "Completion Date (2nd)",
     field: "level_two_completion_date",
     align: "left",
   },
   {
     name: "levelTwoCommissionAmount",
-    label: "Level Two Commission Amount",
+    label: "Commission Amount (2nd) (Rs.)",
     field: "level_two_commission_amount",
     align: "center",
   },
   {
     name: "levelTwoTdsAmount",
-    label: "Level Two TDS Amount (10%)",
+    label: "TDS Amount (2nd) (10%) (Rs.)",
     field: "level_two_tds_amount",
     align: "center",
   },
   {
     name: "levelTwoAmountPayable",
-    label: "Level Two Amount Payable",
+    label: "Amount Payable (2nd) (Rs.)",
     field: "level_two_amount_payable",
     align: "center",
   },
   {
     name: "levelTwoCommissionPaidStatus",
-    label: "Level Two Commission Payment Status",
+    label: "Commission Payment (2nd)",
     field: "level_two_commission_paid_status",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelTwoCommisionPaidDate",
-    label: "Level Two Commission Paid Date",
+    label: "Commission Paid Date (2nd)",
     field: "level_two_commission_paid_date",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelTwoCommissionPaymentComments",
-    label: "Level Two Commission Payment Comments",
+    label: "Commission Payment Comments (2nd)",
     field: "level_two_commission_payment_comments",
     align: "left",
   },
   {
     name: "levelThreeCompletionStatus",
-    label: "Level Three Completion Status",
+    label: "Completion (3rd)",
     field: "level_three_completion_status",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelThreeCompletionDate",
-    label: "Level Three Completion Date",
+    label: "Completion Date (3rd)",
     field: "level_three_completion_date",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelThreeCommissionAmount",
-    label: "Level Three Commission Amount",
+    label: "Commission Amount (3rd) (Rs.)",
     field: "level_three_commission_amount",
     align: "center",
   },
   {
     name: "levelThreeTdsAmount",
-    label: "Level Three TDS Amount (10%)",
+    label: "TDS Amount (3rd) (10%) (Rs.)",
     field: "level_three_tds_amount",
     align: "center",
   },
   {
     name: "levelThreeAmountPayable",
-    label: "Level Three Amount Payable",
+    label: "Amount Payable (3rd) (Rs.)",
     field: "level_three_amount_payable",
     align: "center",
   },
   {
     name: "levelThreeCommissionPaidStatus",
-    label: "Level Three Commission Payment Status",
+    label: "Commission Payment (3rd)",
     field: "level_three_commission_paid_status",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelThreeCommisionPaidDate",
-    label: "Level Three Commission Paid Date",
+    label: "Commission Paid Date (3rd)",
     field: "level_three_commission_paid_date",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelThreeCommissionPaymentComments",
-    label: "Level Three Commission Payment Comments",
+    label: "Commission Payment Comments (3rd)",
     field: "level_three_commission_payment_comments",
     align: "left",
   },
   {
     name: "levelFourCompletionStatus",
-    label: "Level Four Completion Status",
+    label: "Completion (4th)",
     field: "level_four_completion_status",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelFourCompletionDate",
-    label: "Level Four Completion Date",
+    label: "Completion Date (4th)",
     field: "level_four_completion_date",
-    align: "left",
+    align: "center",
   },
   {
     name: "levelFourCommissionAmount",
-    label: "Level Four Commission Amount",
+    label: "Commission Amount (4th) (Rs.)",
     field: "level_four_commission_amount",
     align: "center",
   },
   {
     name: "levelFourTdsAmount",
-    label: "Level Four TDS Amount (10%)",
+    label: "TDS Amount (4th) (10%) (Rs.)",
     field: "level_four_tds_amount",
     align: "center",
   },
   {
     name: "levelFourAmountPayable",
-    label: "Level Four Amount Payable",
+    label: "Amount Payable (4th) (Rs.)",
     field: "level_four_amount_payable",
     align: "center",
   },
   {
     name: "levelFourCommissionPaidStatus",
-    label: "Level Four Commission Payment Status",
+    label: "Commission Payment (4th)",
     field: "level_four_commission_paid_status",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelFourCommisionPaidDate",
-    label: "Level Four Commission Paid Date",
+    label: "Commission Paid Date (4th)",
     field: "level_four_commission_paid_date",
     sortable: true,
-    align: "left",
+    align: "center",
   },
   {
     name: "levelFourCommissionPaymentComments",
-    label: "Level Four Commission Payment Comments",
+    label: "Commission Payment Comments (4th)",
     field: "level_four_commission_payment_comments",
     align: "left",
   },
@@ -719,3 +734,30 @@ const excelExport = () => {
   color: #123499;
 }
 </style>
+
+<!-- <style lang="sass">
+.commissions-table
+  thead tr:first-child th:first-child
+    background-color: #00b4ff
+
+  td:first-child
+    background-color: #00b4ff
+
+  th:first-child,
+  td:first-child
+    position: sticky
+    left: 0
+    z-index: 1
+
+  thead tr:last-child th:last-child
+    background-color: #00b4ff
+
+  td:last-child
+    background-color: #00b4ff
+
+  th:last-child,
+  td:last-child
+    position: sticky
+    right: 0
+    z-index: 1
+</style> -->

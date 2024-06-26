@@ -1,7 +1,7 @@
 <template>
   <div class="row q-pt-md q-ml-lg">
     <div class="col-2">
-      <p style="color: #123499" class="text-bold">From Date</p>
+      <p style="color: #123499" class="text-bold">Order From Date</p>
       <q-input
         v-model="orderFromDate"
         style="max-width: 150px"
@@ -12,7 +12,7 @@
       />
     </div>
     <div class="col-2">
-      <p style="color: #123499" class="text-bold">To Date</p>
+      <p style="color: #123499" class="text-bold">Order To Date</p>
       <q-input
         v-model="orderToDate"
         style="max-width: 150px"
@@ -26,6 +26,7 @@
       <p style="color: #123499" class="text-bold">Courier Status</p>
       <q-select
         filled
+        dense
         style="width: 200px; max-height: 100px"
         v-model="orderStatus"
         :options="orderStatusOptions"
