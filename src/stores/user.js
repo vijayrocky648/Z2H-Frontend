@@ -60,5 +60,10 @@ export const useUserStore = defineStore("user", {
       let url = `/api/z2h/user/customer/commission_details/`;
       return api.get(url, { params: queryParams });
     },
+
+    updateCommissionDetails(payload) {
+      let url = `/api/z2h/user/customer/update_commission_details/`;
+      return api.patch(url, payload);
+    },
   },
 });

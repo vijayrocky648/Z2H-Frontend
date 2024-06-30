@@ -117,6 +117,19 @@
         />
       </template>
 
+      <template #body-cell-userStatus="props">
+        <q-td :props="props">
+          <q-chip
+            :color="props.row.user_status === 'Active' ? 'green' : 'orange'"
+            text-color="white"
+            dense
+            class="text-weight-bolder"
+            square
+            >{{ props.row.user_status }}</q-chip
+          >
+        </q-td>
+      </template>
+
       <template #body-cell-levelOneCompletionStatus="props">
         <q-td :props="props">
           <q-chip
@@ -189,9 +202,7 @@
         <q-td :props="props">
           <q-chip
             :color="
-              props.row.level_one_commission_paid_status === 'Paid'
-                ? 'green'
-                : 'red'
+              commissionPaymentColor(props.row.level_one_commission_paid_status)
             "
             text-color="white"
             dense
@@ -206,9 +217,7 @@
         <q-td :props="props">
           <q-chip
             :color="
-              props.row.level_two_commission_paid_status === 'Paid'
-                ? 'green'
-                : 'red'
+              commissionPaymentColor(props.row.level_two_commission_paid_status)
             "
             text-color="white"
             dense
@@ -223,9 +232,9 @@
         <q-td :props="props">
           <q-chip
             :color="
-              props.row.level_three_commission_paid_status === 'Paid'
-                ? 'green'
-                : 'red'
+              commissionPaymentColor(
+                props.row.level_three_commission_paid_status
+              )
             "
             text-color="white"
             dense
@@ -240,9 +249,9 @@
         <q-td :props="props">
           <q-chip
             :color="
-              props.row.level_four_commission_paid_status === 'Paid'
-                ? 'green'
-                : 'red'
+              commissionPaymentColor(
+                props.row.level_four_commission_paid_status
+              )
             "
             text-color="white"
             dense
@@ -255,26 +264,27 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
+          <q-btn dense round flat color="primary" icon="info"></q-btn>
           <q-btn
             dense
             round
             flat
             color="primary"
-            @click="editRow(props)"
-            icon="info"
-          ></q-btn>
-          <q-btn
-            dense
-            round
-            flat
-            color="primary"
-            @click="editRow(props)"
+            @click="editCommissionDetails(props)"
             icon="edit"
           ></q-btn>
         </q-td>
       </template>
     </q-table>
   </div>
+
+  <edit-commission-details-modal
+    v-if="openEditCommissionPopup"
+    v-model="openEditCommissionPopup"
+    :show-edit-commission-popup="openEditCommissionPopup"
+    :close-edit-commission-popup="closeEditCommissionPopup"
+    :selected-data="selected"
+  />
 </template>
 
 <script setup>
@@ -282,6 +292,7 @@ import { ref, computed } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useUserStore } from "src/stores/user";
 import { exportToExcel } from "src/utils/exportToExcel";
+import editCommissionDetailsModal from "src/components/popups/editCommissionDetailsModal.vue";
 
 // Store Initialization
 const userStore = useUserStore();
@@ -300,6 +311,8 @@ const commissionStatusOptions = ref([
 const commissionLevelOptions = ref(["All", "One", "Two", "Three", "Four"]);
 const filter = ref("");
 const showFilter = ref(false);
+const openEditCommissionPopup = ref(false);
+const selected = ref([]);
 let columnsData = [
   {
     name: "customerNumber",
@@ -421,7 +434,7 @@ let columnsData = [
   {
     name: "levelOneCommissionPaymentComments",
     label: "Commission Payment Comments (1st)",
-    field: "level_one_commission_payment_comments",
+    field: "level_one_payment_comments",
     align: "center",
   },
   {
@@ -471,7 +484,7 @@ let columnsData = [
   {
     name: "levelTwoCommissionPaymentComments",
     label: "Commission Payment Comments (2nd)",
-    field: "level_two_commission_payment_comments",
+    field: "level_two_payment_comments",
     align: "left",
   },
   {
@@ -521,7 +534,7 @@ let columnsData = [
   {
     name: "levelThreeCommissionPaymentComments",
     label: "Commission Payment Comments (3rd)",
-    field: "level_three_commission_payment_comments",
+    field: "level_three_payment_comments",
     align: "left",
   },
   {
@@ -571,8 +584,14 @@ let columnsData = [
   {
     name: "levelFourCommissionPaymentComments",
     label: "Commission Payment Comments (4th)",
-    field: "level_four_commission_payment_comments",
+    field: "level_four_payment_comments",
     align: "left",
+  },
+  {
+    name: "userStatus",
+    label: "User Status",
+    field: "user_status",
+    align: "center",
   },
   { name: "actions", label: "Actions", field: "", align: "center" },
 ];
@@ -589,6 +608,7 @@ const visibleColumns = ref([
   "levelThreeCommissionPaidStatus",
   "levelFourCompletionStatus",
   "levelFourCommissionPaidStatus",
+  "userStatus",
   "actions",
 ]);
 const $q = useQuasar();
@@ -611,6 +631,29 @@ const showLoader = () => {
 
 const hideLoader = () => {
   $q.loading.hide();
+};
+
+const editCommissionDetails = (data) => {
+  openEditCommissionPopup.value = true;
+  selected.value = data.row;
+};
+
+const closeEditCommissionPopup = (refreshCommission) => {
+  openEditCommissionPopup.value = false;
+  if (refreshCommission === true) {
+    selected.value = [];
+    getCommissionsData();
+  }
+};
+
+const commissionPaymentColor = (paymentStatus) => {
+  if (paymentStatus == "Paid") {
+    return "green";
+  } else if (paymentStatus == "Payment Issue") {
+    return "brown";
+  }
+
+  return "red";
 };
 
 const getCommissionsData = () => {
@@ -645,10 +688,6 @@ const getCommissionsData = () => {
     .finally(() => {
       hideLoader();
     });
-};
-
-const editRow = (data) => {
-  console.log("data", data);
 };
 
 const excelExport = () => {

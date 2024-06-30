@@ -9,7 +9,7 @@
         <q-btn icon="close" flat round @click="closeModal" />
       </q-card-section>
       <q-form @submit="updateOrderStatus">
-        <q-scroll-area style="height: calc(95vh - 170px)">
+        <q-scroll-area style="height: calc(75vh - 170px)">
           <q-card-section>
             <div class="text-bold">
               Customer - <span class="text-green">{{ customerName }}</span>
