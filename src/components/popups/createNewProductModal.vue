@@ -56,6 +56,7 @@
             <q-select
               style="width: 400px"
               filled
+              dense
               v-model="productCategory"
               :options="productCategoryOptions"
             />
@@ -63,6 +64,7 @@
             <q-select
               style="width: 400px"
               filled
+              dense
               v-model="productSubCategory"
               :options="productSubCategoryOptions"
             />
@@ -71,6 +73,7 @@
               v-model="productImages"
               label="Add Images"
               filled
+              dense
               multiple
               append
               accept=".jpg,.jpeg,.png"

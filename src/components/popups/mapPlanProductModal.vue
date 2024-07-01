@@ -14,6 +14,7 @@
           <q-select
             style="width: 400px"
             filled
+            dense
             v-model="chosenPlan"
             :options="planOptions"
             label="Choose Plan"
@@ -21,6 +22,7 @@
           <div class="text-bold q-mt-lg">Products</div>
           <q-select
             filled
+            dense
             v-model="chosenProducts"
             multiple
             :options="productOptions"

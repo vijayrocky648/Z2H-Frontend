@@ -47,6 +47,7 @@
           <q-select
             style="width: 400px"
             filled
+            dense
             v-model="productCategory"
             :options="productCategoryOptions"
           />

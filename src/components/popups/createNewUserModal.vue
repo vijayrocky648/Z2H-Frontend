@@ -178,6 +178,7 @@
               <q-select
                 style="width: 320px"
                 filled
+                dense
                 v-model="state"
                 :options="stateListOptions"
               />
@@ -185,6 +186,7 @@
               <q-select
                 style="width: 320px"
                 filled
+                dense
                 v-model="district"
                 :options="dirstrictListOptions"
               />
@@ -348,6 +350,7 @@
                     <q-select
                       style="width: 400px"
                       filled
+                      dense
                       v-model="systemRole"
                       :options="systemRoleOptions"
                     />

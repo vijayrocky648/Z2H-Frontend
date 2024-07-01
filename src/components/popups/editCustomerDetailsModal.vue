@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="openPopup" persistent @keydown.esc="closeModal">
-    <q-card class="customer-modal">
+    <q-card class="customer-modal q-pl-sm">
       <q-card-section class="row items-center">
         <div class="text-h6 text-bold" style="color: #123499">
           Edit Customer Details
@@ -113,6 +113,7 @@
             <q-select
               style="width: 350px"
               filled
+              dense
               v-model="state"
               :options="stateListOptions"
             />
@@ -120,6 +121,7 @@
             <q-select
               style="width: 350px"
               filled
+              dense
               v-model="district"
               :options="dirstrictListOptions"
             />
@@ -156,6 +158,7 @@
             <q-select
               style="width: 350px"
               filled
+              dense
               v-model="userStatus"
               :options="userStatusOptions"
             />

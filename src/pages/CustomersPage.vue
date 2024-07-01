@@ -1,5 +1,21 @@
 <template>
   <div style="margin-top: 30px" class="q-ml-md q-mr-lg q-pa-md">
+    <div>
+      <q-btn-toggle
+        v-model="toggleSelect"
+        push
+        glossy
+        toggle-color="primary"
+        :options="toggleSelectOptions"
+        no-caps
+      />
+    </div>
+  </div>
+  <div
+    style="margin-top: 30px"
+    class="q-ml-md q-mr-lg q-pa-md"
+    v-if="toggleSelect === 'customers'"
+  >
     <q-btn
       color="green"
       class="q-mb-md"
@@ -56,7 +72,10 @@
     />
   </div>
 
-  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+  <div
+    v-if="enableCustomerLevels && toggleSelect === 'customers'"
+    class="q-ml-md q-mr-lg q-pa-md"
+  >
     <q-table
       class="customers-table"
       flat
@@ -92,7 +111,10 @@
     </q-table>
   </div>
 
-  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+  <div
+    v-if="enableCustomerLevels && toggleSelect === 'customers'"
+    class="q-ml-md q-mr-lg q-pa-md"
+  >
     <q-table
       class="customers-table"
       flat
@@ -128,7 +150,10 @@
     </q-table>
   </div>
 
-  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+  <div
+    v-if="enableCustomerLevels && toggleSelect === 'customers'"
+    class="q-ml-md q-mr-lg q-pa-md"
+  >
     <q-table
       class="customers-table"
       flat
@@ -164,7 +189,10 @@
     </q-table>
   </div>
 
-  <div v-if="enableCustomerLevels" class="q-ml-md q-mr-lg q-pa-md">
+  <div
+    v-if="enableCustomerLevels && toggleSelect === 'customers'"
+    class="q-ml-md q-mr-lg q-pa-md"
+  >
     <q-table
       class="customers-table"
       flat
@@ -406,6 +434,11 @@ const thirdLevelTitle = ref("");
 const fourthLevelTitle = ref("");
 const enableCustomerLevels = ref(false);
 const openEditCustomerPopup = ref(false);
+const toggleSelectOptions = ref([
+  { label: "Customers", value: "customers" },
+  { label: "Registered Users", value: "registeredUsers" },
+]);
+const toggleSelect = ref("customers");
 
 // Functions
 const showLoader = () => {
