@@ -228,6 +228,57 @@
     </q-table>
   </div>
 
+  <div
+    v-if="toggleSelect === 'registeredUsers'"
+    style="margin-top: 30px"
+    class="q-ml-md q-mr-lg q-pa-md"
+  >
+    <q-btn
+      color="green"
+      class="q-mb-md"
+      style="width: 20px"
+      no-caps
+      @click="excelExportRegisteredUsers"
+    >
+      <div class="row justify-start items-center">
+        <q-icon name="fas fa-file-excel" />
+        <span class="q-ml-sm"></span>
+      </div>
+    </q-btn>
+    <q-table
+      class="customers-table"
+      flat
+      bordered
+      title="Registered Users"
+      :rows="registeredUsersRows"
+      :columns="registeredUsersColumns"
+      row-key="name"
+      :filter="registeredUserFilter"
+    >
+      <template v-slot:top-right>
+        <q-input
+          v-if="showFilterRegisteredUsers"
+          filled
+          borderless
+          dense
+          debounce="300"
+          v-model="registeredUserFilter"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        <q-btn
+          class="q-ml-sm q-mr-sm"
+          icon="filter_list"
+          @click="showFilterRegisteredUsers = !showFilterRegisteredUsers"
+          flat
+        />
+      </template>
+    </q-table>
+  </div>
+
   <edit-customer-details-modal
     v-if="openEditCustomerPopup"
     v-model="openEditCustomerPopup"
@@ -410,9 +461,109 @@ let columnsData = [
     sortable: true,
   },
 ];
+let registerUsersColumnData = [
+  {
+    name: "name",
+    required: true,
+    label: "name",
+    align: "left",
+    field: (row) => row.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "registredDate",
+    label: "Registered Date",
+    field: "registered_date",
+    align: "center",
+  },
+  {
+    name: "dob",
+    label: "Date of birth",
+    field: "date_of_birth",
+    align: "center",
+  },
+  { name: "gender", label: "Gender", field: "gender", align: "center" },
+  {
+    name: "mobileNumber",
+    label: "Mobile Number",
+    field: "mobile_number",
+    align: "center",
+  },
+  {
+    name: "nomineeName",
+    label: "Nominee Name",
+    field: "nominee_name",
+    align: "center",
+  },
+  {
+    name: "aadharNumber",
+    label: "Aadhar Number",
+    field: "aadhar_number",
+    align: "center",
+  },
+  { name: "pan", label: "PAN", field: "pan", align: "center" },
+  { name: "city", label: "City", field: "city", align: "center" },
+  { name: "town", label: "Town", field: "town", align: "center" },
+  {
+    name: "district",
+    label: "District",
+    field: "district",
+    sortable: true,
+    align: "center",
+  },
+  {
+    name: "state",
+    label: "State",
+    field: "state",
+    sortable: true,
+    align: "center",
+  },
+  { name: "address", label: "Address", field: "address", align: "center" },
+  { name: "pinCode", label: "Pin Code", field: "pin_code", align: "center" },
+  {
+    name: "nameOfBank",
+    label: "Name of Bank",
+    field: "name_of_bank",
+    align: "center",
+  },
+  {
+    name: "nameAsInBank",
+    label: "Name as in Bank",
+    field: "name_as_in_bank",
+    align: "center",
+  },
+  { name: "ifscCode", label: "IFSC Code", field: "ifsc_code", align: "center" },
+  {
+    name: "bankBranch",
+    label: "Bank Branch",
+    field: "bank_branch",
+    align: "center",
+  },
+  {
+    name: "accountNumber",
+    label: "Account Number",
+    field: "account_number",
+    align: "center",
+  },
+  {
+    name: "referrerId",
+    label: "Referrrer Id",
+    field: "referrer_id",
+    align: "center",
+  },
+  {
+    name: "referrerName",
+    label: "Referrer Name",
+    field: "referrer_name",
+    align: "center",
+  },
+];
 
 const columns = ref(columnsData);
+const registeredUsersColumns = ref(registerUsersColumnData);
 const rows = ref([]);
+const registeredUsersRows = ref([]);
 const rowsFirstLevel = ref([]);
 const rowsSecondLevel = ref([]);
 const rowsThirdLevel = ref([]);
@@ -423,11 +574,13 @@ const filterFirstLevel = ref("");
 const filterSecondLevel = ref("");
 const filterThirdLevel = ref("");
 const filterFourthLevel = ref("");
+const registeredUserFilter = ref("");
 const showFilter = ref(false);
 const showFilterFirstLevel = ref(false);
 const showFilterSecondLevel = ref(false);
 const showFilterThirdLevel = ref(false);
 const showFilterFourthLevel = ref(false);
+const showFilterRegisteredUsers = ref(false);
 const firstLevelTitle = ref("");
 const secondLevelTitle = ref("");
 const thirdLevelTitle = ref("");
@@ -465,6 +618,22 @@ const closeEditCustomerPopup = (refreshCustomers) => {
     selected.value = [];
     customersList();
   }
+};
+
+const registeredUsersList = () => {
+  showLoader();
+  userStore
+    .getRegisteredUsers()
+    .then((res) => {
+      let responseData = res.data;
+      registeredUsersRows.value = responseData.data;
+    })
+    .catch((err) => {
+      console.log("err", err);
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 
 const customersList = () => {
@@ -588,7 +757,41 @@ const excelExport = () => {
     requiredRows.push(data);
   }
 
-  exportToExcel(requiredRows, "customers.xlsx");
+  exportToExcel(requiredRows, "Customers.xlsx");
+};
+
+const excelExportRegisteredUsers = () => {
+  let requiredRows = [];
+
+  for (let row of registeredUsersRows.value) {
+    let data = {
+      "Register User Name": row.name,
+      "Registered Date": row.registered_date,
+      "Date of Birth": row.date_of_birth,
+      Gender: row.gender,
+      "Mobile Number": row.mobile_number,
+      "Nominee Name": row.nominee_name,
+      "Aadhar Name": row.aadhar_number,
+      PAN: row.pan,
+      City: row.city,
+      Town: row.town,
+      District: row.district,
+      State: row.state,
+      Address: row.address,
+      "Pin Code": row.pin_code,
+      "Name of Bank": row.name_of_bank,
+      "Name as in Bank": row.name_as_in_bank,
+      "IFSC Code": row.ifsc_code,
+      "Bank Branch": row.bank_branch,
+      "Account Number": row.account_number,
+      "Referrer Id": row.referrer_id,
+      "Referrer Name": row.referrer_name,
+    };
+
+    requiredRows.push(data);
+  }
+
+  exportToExcel(requiredRows, "Registered_Users.xlsx");
 };
 
 // Watchers
@@ -607,6 +810,7 @@ watch(selected, (value) => {
 // Lifecycle Hooks
 onMounted(() => {
   customersList();
+  registeredUsersList();
 });
 </script>
 
