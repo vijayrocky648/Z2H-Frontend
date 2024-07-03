@@ -38,11 +38,12 @@
         color="primary"
         label="Search"
         no-caps
+        :disable="validateSearch"
         @click="getSearchData"
       />
     </div>
   </div>
-  <div class="q-ml-md q-mt-sm q-mr-lg q-pa-md">
+  <div class="q-ml-md q-mt-lg q-mr-lg q-pa-md">
     <q-btn
       color="green"
       class="q-mb-md"
@@ -88,6 +89,19 @@
           @click="showFilter = !showFilter"
           flat
         />
+      </template>
+
+      <template #body-cell-orderStatus="props">
+        <q-td :props="props">
+          <q-chip
+            :color="orderStatusColor(props.row.order_status)"
+            text-color="white"
+            dense
+            class="text-weight-bolder"
+            square
+            >{{ props.row.order_status }}</q-chip
+          >
+        </q-td>
       </template>
     </q-table>
     <q-btn
@@ -148,59 +162,133 @@ let columnsData = [
     label: "Order Date",
     field: "order_date",
     sortable: true,
+    align: "center",
   },
-  { name: "customerName", label: "Customer Name", field: "customer_name" },
-  { name: "mobileNumber", label: "Mobile Number", field: "mobile_number" },
-  { name: "referrerId", label: "Referrer Id", field: "referrer_id" },
-  { name: "referrerName", label: "Referrer Name", field: "referrer_name" },
+  {
+    name: "customerName",
+    label: "Customer Name",
+    field: "customer_name",
+    align: "center",
+  },
+  {
+    name: "mobileNumber",
+    label: "Mobile Number",
+    field: "mobile_number",
+    align: "center",
+  },
+  {
+    name: "referrerId",
+    label: "Referrer Id",
+    field: "referrer_id",
+    align: "center",
+  },
+  {
+    name: "referrerName",
+    label: "Referrer Name",
+    field: "referrer_name",
+    align: "center",
+  },
   {
     name: "referrerMobileNumber",
     label: "Referrer Mobile Number",
     field: "referrer_mobile_number",
+    align: "center",
   },
   {
     name: "totalProductPrice",
     label: "Total Product Price",
     field: "total_product_price",
+    align: "center",
   },
-  { name: "cgst", label: "CGST Amount", field: "order_cgst_amount" },
-  { name: "sgst", label: "SGST Amount", field: "order_sgst_amount" },
-  { name: "igst", label: "IGST Amount", field: "order_igst_amount" },
+  {
+    name: "cgst",
+    label: "CGST Amount",
+    field: "order_cgst_amount",
+    align: "center",
+  },
+  {
+    name: "sgst",
+    label: "SGST Amount",
+    field: "order_sgst_amount",
+    align: "center",
+  },
+  {
+    name: "igst",
+    label: "IGST Amount",
+    field: "order_igst_amount",
+    align: "center",
+  },
   {
     name: "gstTotal",
     label: "GST Total Amount",
     field: "order_gst_total_amount",
+    align: "center",
   },
   {
     name: "orderTotal",
     label: "Order Total Amount",
     field: "order_total_amount",
+    align: "center",
   },
-  { name: "orderStatus", label: "Order Status", field: "order_status" },
-  { name: "courierDate", label: "Courier Date", field: "courier_date" },
+  {
+    name: "orderStatus",
+    label: "Order Status",
+    field: "order_status",
+    align: "center",
+  },
+  {
+    name: "courierDate",
+    label: "Courier Date",
+    field: "courier_date",
+    align: "center",
+  },
   {
     name: "deliveryThrough",
     label: "Courier Company Name",
     field: "delivery_through",
+    align: "center",
   },
   {
     name: "deliveryNumber",
     label: "Courier Tracking Number",
     field: "delivery_number",
+    align: "center",
   },
   {
     name: "deliveryAddress",
     label: "Delivery Address",
     field: "delivery_address",
+    align: "center",
   },
-  { name: "deliveryDate", label: "Delivery Date", field: "delivery_date" },
-  { name: "paymentMode", label: "Payment Mode", field: "payment_mode" },
-  { name: "paymentStatus", label: "Payment Status", field: "payment_status" },
-  { name: "paymentDate", label: "Payment Date", field: "payment_date" },
+  {
+    name: "deliveryDate",
+    label: "Delivery Date",
+    field: "delivery_date",
+    align: "center",
+  },
+  {
+    name: "paymentMode",
+    label: "Payment Mode",
+    field: "payment_mode",
+    align: "center",
+  },
+  {
+    name: "paymentStatus",
+    label: "Payment Status",
+    field: "payment_status",
+    align: "center",
+  },
+  {
+    name: "paymentDate",
+    label: "Payment Date",
+    field: "payment_date",
+    align: "center",
+  },
   {
     name: "paymentReference",
     label: "Payment Reference",
     field: "payment_reference",
+    align: "center",
   },
 ];
 let columnsDataOrderItems = [
@@ -217,61 +305,73 @@ let columnsDataOrderItems = [
     name: "productName",
     label: "Product Name",
     field: "product_name",
+    align: "center",
   },
   {
     name: "quantity",
     label: "Quantity",
     field: "quantity",
+    align: "center",
   },
   {
     name: "hsnCode",
     label: "HSN Code",
     field: "hsn_code",
+    align: "center",
   },
   {
     name: "price",
     label: "Price (INR)",
     field: "price",
+    align: "center",
   },
   {
     name: "cgstPercentage",
     label: "CGST (%)",
     field: "cgst_percentage",
+    align: "center",
   },
   {
     name: "cgstAmount",
     label: "CGST Amount (INR)",
     field: "cgst_amount",
+    align: "center",
   },
   {
     name: "sgstPercentage",
     label: "SGST (%)",
     field: "sgst_percentage",
+    align: "center",
   },
   {
     name: "sgstAmount",
     label: "SGST Amount (INR)",
     field: "sgst_amount",
+    align: "center",
   },
   {
     name: "igstPercentage",
     label: "IGST (%)",
     field: "igst_percentage",
+    align: "center",
   },
   {
     name: "igstAmount",
     label: "IGST Amount (INR)",
     field: "igst_amount",
+    align: "center",
   },
   {
     name: "gstTotalAmount",
     label: "GST Total (INR)",
     field: "gst_total_amount",
+    align: "center",
   },
   {
     name: "totalAmount",
     label: "Total (INR)",
     field: "total_amount",
+    align: "center",
   },
 ];
 
@@ -282,10 +382,11 @@ const rowsOrderItems = ref([]);
 const selected = ref([]);
 const filter = ref("");
 const showFilter = ref(false);
-const orderStatus = ref("Yet to be Couriered");
+const orderStatus = ref("All");
 const orderFromDate = ref("");
 const orderToDate = ref("");
 let orderStatusData = [
+  { label: "all", name: "All" },
   { label: "yet_to_be_couriered", name: "Yet to be Couriered" },
   { label: "in_transit", name: "In transit" },
   { label: "delivered", name: "Delivered" },
@@ -303,6 +404,10 @@ const getOrderStatus = computed(() => {
     (order) => order.name === orderStatus.value
   );
   return requiredOrderStatus.label;
+});
+
+const validateSearch = computed(() => {
+  return !orderFromDate.value || !orderToDate.value;
 });
 
 // Functions
@@ -333,11 +438,23 @@ const editOrderDetails = () => {
   openNewUserPopup.value = true;
 };
 
+const orderStatusColor = (orderStatus) => {
+  if (orderStatus === "Yet to be Couriered") {
+    return "orange";
+  } else if (orderStatus === "In Transit") {
+    return "purple";
+  } else if (orderStatus === "Delivered") {
+    return "green";
+  }
+
+  return "red";
+};
+
 const ordersList = () => {
   showLoader();
   let queryParams = {
-    fromDate: orderFromDate.value == "" ? null : orderFromDate.value,
-    toDate: orderToDate.value == "" ? null : orderToDate.value,
+    fromDate: orderFromDate.value,
+    toDate: orderToDate.value,
     orderStatus: getOrderStatus.value,
   };
   generalStore
@@ -381,7 +498,11 @@ const getSearchData = () => {
 const excelExport = () => {
   showLoader();
   let orderStatusReplacedSpaces = orderStatus.value.replace(/ /g, "_");
-  let fileName = `${orderStatusReplacedSpaces}_registration_payments.xlsx`;
+  let fileName = `Registration_Payments_All.xlsx`;
+
+  if (!validateSearch.value) {
+    fileName = `Registration_Payments_${orderStatusReplacedSpaces}_from_${orderFromDate.value}_to_${orderToDate.value}.xlsx`;
+  }
 
   let requiredData = [];
 

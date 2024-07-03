@@ -83,6 +83,7 @@
       >
         <q-list class="q-pl-lg">
           <q-item
+            to="/sales"
             active-class="q-item-no-link-highlighting"
             class="report-icon"
           >

@@ -70,6 +70,8 @@ const pageTitle = computed(() => {
     selectedPage.value = "Products";
   } else if (routeName === "commissions") {
     selectedPage.value = "Commissions";
+  } else if (routeName === "sales") {
+    selectedPage.value = "Sales";
   }
 
   return `Zero To Hero / ${selectedPage.value}`;
