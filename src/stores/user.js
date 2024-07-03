@@ -70,5 +70,10 @@ export const useUserStore = defineStore("user", {
       let url = '/api/z2h/user/web_user/registered_users/';
       return api.get(url);
     },
+
+    getDashboardReports() {
+      let url = "/api/z2h/user/dashborad_reports/";
+      return api.get(url);
+    },
   },
 });

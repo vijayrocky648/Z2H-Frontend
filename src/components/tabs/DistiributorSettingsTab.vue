@@ -51,6 +51,7 @@
                               <div class="q-gutter-md">
                                 <q-select
                                   filled
+                                  dense
                                   v-model="planPackage"
                                   :options="planPackageOptions"
                                 />

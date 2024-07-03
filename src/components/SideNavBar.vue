@@ -10,6 +10,15 @@
     class="bg-primary text-white"
   >
     <q-list>
+      <q-item to="/main" active-class="q-item-no-link-highlighting">
+        <q-item-section avatar>
+          <q-icon name="dashboard" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Dashboard</q-item-label>
+        </q-item-section>
+      </q-item>
+
       <q-item
         v-if="showUsersPage"
         to="/users"
