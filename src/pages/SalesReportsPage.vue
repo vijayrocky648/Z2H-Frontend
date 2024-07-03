@@ -246,7 +246,7 @@ const hideLoader = () => {
 
 const courierStatusColor = (orderStatus) => {
   if (orderStatus === "Yet to be Couriered") {
-    return "#ffa755";
+    return "orange";
   } else if (orderStatus === "In Transit") {
     return "purple";
   } else if (orderStatus === "Delivered") {
