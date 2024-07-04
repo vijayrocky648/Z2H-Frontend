@@ -662,6 +662,8 @@ const customersList = () => {
       }
 
       rows.value = requiredArray;
+
+      registeredUsersList();
     })
     .catch((err) => {
       console.log("errror", err);
@@ -810,7 +812,6 @@ watch(selected, (value) => {
 // Lifecycle Hooks
 onMounted(() => {
   customersList();
-  registeredUsersList();
 });
 </script>
 

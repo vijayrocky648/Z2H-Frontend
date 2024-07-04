@@ -75,5 +75,10 @@ export const useUserStore = defineStore("user", {
       let url = "/api/z2h/user/dashborad_reports/";
       return api.get(url);
     },
+
+    getNoDownlineReports() {
+      let url = "/api/z2h/user/no_downline/";
+      return api.get(url);
+    }
   },
 });

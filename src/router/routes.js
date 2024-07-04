@@ -51,6 +51,11 @@ const routes = [
         path: "/sales",
         name: "sales",
         component: () => import("src/pages/SalesReportsPage.vue")
+      },
+      {
+        path: "/no-downline",
+        name: "noDownline",
+        component: () => import("src/pages/NoDownlineReportsPage.vue")
       }
     ]
   },

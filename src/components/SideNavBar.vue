@@ -105,6 +105,7 @@
           </q-item>
 
           <q-item
+            to="/no-downline"
             active-class="q-item-no-link-highlighting"
             class="report-icon"
           >
