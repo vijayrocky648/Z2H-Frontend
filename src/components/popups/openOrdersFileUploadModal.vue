@@ -4,7 +4,7 @@
     persistent
     @keydown.esc="closeModal"
   >
-    <q-card class="orders-file-upload-modal q-pl-md">
+    <q-card class="orders-file-upload-modal">
       <q-card-section class="items-center">
         <q-btn
           icon="close"
@@ -17,7 +17,7 @@
           class="text-h6 text-bold text-center q-mt-lg q-pb-lg"
           style="color: #123499"
         >
-          Orders Excel File Upload
+          Orders File Upload
         </div>
         <div style="height: 50px">
           <q-file
@@ -25,11 +25,9 @@
             v-model="ordersFile"
             accept=".xlsx"
             label="Upload File"
-            style="width: 300px"
-            class="q-ml-sm"
+            class="q-px-lg"
           />
         </div>
-        <q-space />
       </q-card-section>
       <q-card-section class="row justify-end">
         <q-card-actions class="q-px-none">
