@@ -44,18 +44,51 @@
     </div>
   </div>
   <div class="q-ml-md q-mt-lg q-mr-lg q-pa-md">
-    <q-btn
-      color="green"
-      class="q-mb-md"
-      style="width: 20px"
-      no-caps
-      @click="excelExport"
-    >
-      <div class="row justify-start items-center">
-        <q-icon name="fas fa-file-excel" />
-        <span class="q-ml-sm"></span>
-      </div>
-    </q-btn>
+    <div>
+      <q-btn
+        color="green"
+        class="q-mb-md"
+        style="width: 20px"
+        no-caps
+        @click="excelExport"
+      >
+        <div class="row justify-start items-center">
+          <q-icon name="fas fa-file-excel" />
+          <span class="q-ml-sm"></span>
+        </div>
+      </q-btn>
+      <q-btn
+        color="primary"
+        class="q-mb-md float-right"
+        style="width: 20px"
+        no-caps
+        @click="openFileUploadModal = true"
+      >
+        <custom-tooltip
+          :content="fileUploadTooltipContent"
+          :max-width="'20rem'"
+        />
+        <div class="row justify-start items-center">
+          <q-icon name="fas fa-upload" />
+          <span class="q-ml-sm"></span>
+        </div>
+      </q-btn>
+      <q-btn
+        color="primary"
+        class="q-mb-md float-right q-mr-md"
+        style="width: 20px"
+        no-caps
+      >
+        <custom-tooltip
+          :content="fileDownloadTooltipContent"
+          :max-width="'20rem'"
+        />
+        <div class="row justify-start items-center">
+          <q-icon name="fas fa-download" />
+          <span class="q-ml-sm"></span>
+        </div>
+      </q-btn>
+    </div>
     <q-table
       class="orders-table"
       flat
@@ -131,21 +164,30 @@
     :close-new-user-popup="closeNewUserPopup"
     :selected-data="selected"
   />
+  <open-orders-file-upload-modal
+    v-if="openFileUploadModal"
+    v-model="openFileUploadModal"
+    :show-orders-file-upload-popup="openFileUploadModal"
+    :close-orders-file-upload-popup="closeOrdersFileUploadPopup"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
-import editOrderDetailsModal from "src/components/popups/editOrderDetailsModal.vue";
 import { exportToExcel } from "src/utils/exportToExcel";
 import { storeToRefs } from "pinia";
+import editOrderDetailsModal from "src/components/popups/editOrderDetailsModal.vue";
+import openOrdersFileUploadModal from "src/components/popups/openOrdersFileUploadModal.vue";
+import customTooltip from "src/components/shared/CustomTooltip.vue";
 
 // Store Initialization
 const generalStore = useGeneralStore();
 
 // Variable Initializations
 const openNewUserPopup = ref(false);
+const openFileUploadModal = ref(false);
 const { orders } = storeToRefs(generalStore);
 let columnsData = [
   {
@@ -392,6 +434,8 @@ let orderStatusData = [
   { label: "delivered", name: "Delivered" },
   { label: "cancelled", name: "Cancelled" },
 ];
+const fileDownloadTooltipContent = ref("Orders Template Download");
+const fileUploadTooltipContent = ref("Orders Data Upload");
 const $q = useQuasar();
 
 // Computed
@@ -430,6 +474,14 @@ const closeNewUserPopup = (refreshData = false) => {
 
   if (refreshData === true) {
     selected.value = [];
+    ordersList();
+  }
+};
+
+const closeOrdersFileUploadPopup = (refreshData = false) => {
+  openFileUploadModal.value = false;
+
+  if (refreshData === true) {
     ordersList();
   }
 };
