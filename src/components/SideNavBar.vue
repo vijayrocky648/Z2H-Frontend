@@ -118,6 +118,7 @@
           </q-item>
 
           <q-item
+            to="/commission-reports"
             active-class="q-item-no-link-highlighting"
             class="report-icon"
           >

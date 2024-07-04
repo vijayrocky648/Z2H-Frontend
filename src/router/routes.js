@@ -56,6 +56,11 @@ const routes = [
         path: "/no-downline",
         name: "noDownline",
         component: () => import("src/pages/NoDownlineReportsPage.vue")
+      },
+      {
+        path: "/commission-reports",
+        name: "commissionReports",
+        component: () => import("src/pages/CommissionsReportsPage.vue")
       }
     ]
   },
