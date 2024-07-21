@@ -1,71 +1,73 @@
+const initialPath = '/admin'
+
 const routes = [
   // New Page Paths
   {
-    path: '/main',
+    path: `${initialPath}/main`,
     name: "main",
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: "/settings",
+        path: `${initialPath}/settings`,
         name: "settings",
         component: () => import('src/pages/SettingsPage.vue'),
         children: [
           {
-            path: "/user-settings",
+            path: `${initialPath}/user-settings`,
             name: "user-settings",
             component: () => import("src/components/tabs/UserSettingsTab.vue")
           },
           {
-            path: "/customer-settings",
+            path: `${initialPath}/customer-settings`,
             name: "customer-settings",
             component: () => import("src/components/tabs/DistiributorSettingsTab.vue")
           },
         ]
       },
       {
-        path: "/users",
+        path: `${initialPath}/users`,
         name: "users",
         component: () => import("src/pages/UsersPage.vue")
       },
       {
-        path: "/customers",
+        path: `${initialPath}/customers`,
         name: "customers",
         component: () => import("src/pages/CustomersPage.vue")
       },
       {
-        path: "/registration-payments",
+        path: `${initialPath}/registration-payments`,
         name: "registrationPayments",
         component: () => import("src/pages/OrdersPage.vue")
       },
       {
-        path: "/products",
+        path: `${initialPath}/products`,
         name: "products",
         component: () => import("src/pages/ProductsPage.vue")
       },
       {
-        path: "/commissions",
+        path: `${initialPath}/commissions`,
         name: "commissions",
         component: () => import("src/pages/CommissionsPage.vue")
       },
       {
-        path: "/sales",
+        path: `${initialPath}/sales`,
         name: "sales",
         component: () => import("src/pages/SalesReportsPage.vue")
       },
       {
-        path: "/no-downline",
+        path: `${initialPath}/no-downline`,
         name: "noDownline",
         component: () => import("src/pages/NoDownlineReportsPage.vue")
       },
       {
-        path: "/commission-reports",
+        path: `${initialPath}/commission-reports`,
         name: "commissionReports",
         component: () => import("src/pages/CommissionsReportsPage.vue")
       }
     ]
   },
   {
-    path: '/sign-in',
+    path: `${initialPath}/sign-in`,
     component: () => import('pages/LoginPage.vue'),
     name: "sign-in"
   },

@@ -142,7 +142,6 @@ const getDashboardReportData = () => {
   userStore
     .getDashboardReports()
     .then((res) => {
-      console.log("res", res.data);
       let responseData = res.data;
       yetToBeCourieredOrdersCount.value =
         responseData.yet_to_be_couriered_orders_count;

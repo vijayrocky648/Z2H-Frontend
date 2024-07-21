@@ -278,7 +278,6 @@ const changeDate = (inputDate) => {
 
 const updateOrderStatus = () => {
   showLoader();
-  console.log("courier date", courierDate.value);
 
   let payload = {
     delivery_date: deliveryDate.value ?? null,

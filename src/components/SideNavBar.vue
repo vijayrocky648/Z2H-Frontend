@@ -10,7 +10,7 @@
     class="bg-primary text-white"
   >
     <q-list>
-      <q-item to="/main" active-class="q-item-no-link-highlighting">
+      <q-item to="/admin/main" active-class="q-item-no-link-highlighting">
         <q-item-section avatar>
           <q-icon name="dashboard" />
         </q-item-section>
@@ -21,7 +21,7 @@
 
       <q-item
         v-if="showUsersPage"
-        to="/users"
+        to="/admin/users"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
@@ -34,7 +34,7 @@
 
       <q-item
         v-if="showProductsPage"
-        to="/products"
+        to="/admin/products"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
@@ -47,7 +47,7 @@
 
       <q-item
         v-if="showOrdersPage"
-        to="/registration-payments"
+        to="/admin/registration-payments"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
@@ -60,7 +60,7 @@
 
       <q-item
         v-if="showCustomersPage"
-        to="/customers"
+        to="/admin/customers"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
@@ -73,7 +73,7 @@
 
       <q-item
         v-if="showCommissionPage"
-        to="/commissions"
+        to="/admin/commissions"
         active-class="q-item-no-link-highlighting"
         class="report-icon"
       >
@@ -92,7 +92,7 @@
       >
         <q-list class="q-pl-lg">
           <q-item
-            to="/sales"
+            to="/admin/sales"
             active-class="q-item-no-link-highlighting"
             class="report-icon"
           >
@@ -105,7 +105,7 @@
           </q-item>
 
           <q-item
-            to="/no-downline"
+            to="/admin/no-downline"
             active-class="q-item-no-link-highlighting"
             class="report-icon"
           >
@@ -118,7 +118,7 @@
           </q-item>
 
           <q-item
-            to="/commission-reports"
+            to="/admin/commission-reports"
             active-class="q-item-no-link-highlighting"
             class="report-icon"
           >
@@ -158,7 +158,7 @@
 
       <q-item
         v-if="showSettingsPage"
-        to="/customer-settings"
+        to="/admin/customer-settings"
         active-class="q-item-no-link-highlighting"
       >
         <q-item-section avatar>
@@ -170,7 +170,7 @@
       </q-item>
 
       <q-item
-        to="/sign-in"
+        to="/admin/sign-in"
         active-class="q-item-no-link-highlighting"
         @click="logout"
       >

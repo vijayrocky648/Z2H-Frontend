@@ -9,13 +9,13 @@
         active-color="blue-10"
       >
         <!-- <q-route-tab
-          to="/user-settings"
+          to="/admin/user-settings"
           class="text-capitalize q-px-xl bg-white top-borders-rounded"
           name="userSettings"
           label="User"
         /> -->
         <q-route-tab
-          to="/customer-settings"
+          to="/admin/customer-settings"
           class="text-capitalize q-px-xl bg-white top-borders-rounded"
           name="customerSettings"
           label="Customer"
