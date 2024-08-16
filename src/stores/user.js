@@ -71,6 +71,11 @@ export const useUserStore = defineStore("user", {
       return api.get(url);
     },
 
+    deleteRegisteredUser(payload) {
+      let url = '/api/z2h/user/web_user/delete_registered_user/';
+      return api.delete(url, { data: payload });
+    },
+
     getDashboardReports() {
       let url = "/api/z2h/user/dashborad_reports/";
       return api.get(url);

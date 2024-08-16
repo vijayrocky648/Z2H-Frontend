@@ -246,7 +246,7 @@
       </div>
     </q-btn>
     <q-table
-      class="customers-table"
+      class="registered-users-table"
       flat
       bordered
       title="Registered Users"
@@ -275,6 +275,19 @@
           @click="showFilterRegisteredUsers = !showFilterRegisteredUsers"
           flat
         />
+      </template>
+
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            style="color: #990f02"
+            dense
+            round
+            flat
+            @click="deleteRegisterUser(props)"
+            icon="delete"
+          ></q-btn>
+        </q-td>
       </template>
     </q-table>
   </div>
@@ -314,151 +327,281 @@ let columnsData = [
     name: "name",
     label: "Customer Name",
     field: "name",
+    align: "center",
   },
-  { name: "dob", label: "Date of birth", field: "date_of_birth" },
-  { name: "gender", label: "Gender", field: "gender" },
-  { name: "plan", label: "Plan Name", field: "plan" },
+  {
+    name: "dob",
+    label: "Date of birth",
+    field: "date_of_birth",
+    align: "center",
+  },
+  {
+    name: "emailAddress",
+    label: "Email Address",
+    field: "email_address",
+    align: "center",
+  },
+  { name: "gender", label: "Gender", field: "gender", align: "center" },
+  { name: "plan", label: "Plan Name", field: "plan", align: "center" },
   {
     name: "planStartDate",
     label: "Customer Registration Date",
     field: "plan_start_date",
     sortable: true,
+    align: "center",
   },
-  { name: "mobileNumber", label: "Mobile Number", field: "mobile_number" },
-  { name: "nomineeName", label: "Nominee Name", field: "nominee_name" },
-  { name: "aadharNumber", label: "Aadhar Number", field: "aadhar_number" },
-  { name: "pan", label: "PAN", field: "pan" },
-  { name: "city", label: "City", field: "city" },
-  { name: "town", label: "Town", field: "town" },
-  { name: "district", label: "District", field: "district", sortable: true },
-  { name: "state", label: "State", field: "state", sortable: true },
-  { name: "address", label: "Address", field: "address" },
-  { name: "pinCode", label: "Pin Code", field: "pin_code" },
-  { name: "nameOfBank", label: "Name of Bank", field: "name_of_bank" },
-  { name: "nameAsInBank", label: "Name as in Bank", field: "name_as_in_bank" },
-  { name: "ifscCode", label: "IFSC Code", field: "ifsc_code" },
-  { name: "bankBranch", label: "Bank Branch", field: "bank_branch" },
-  { name: "accountNumber", label: "Account Number", field: "account_number" },
-  { name: "referrerId", label: "Referrrer Id", field: "referrer_id" },
-  { name: "referrerName", label: "Referrer Name", field: "referrer_name" },
-  { name: "orderNumber", label: "Order Number", field: "order_number" },
-  { name: "productName", label: "Product Name", field: "product_name" },
-  { name: "deliveryThrough", label: "Courier Name", field: "delivery_through" },
-  { name: "deliveryNumber", label: "Courier Number", field: "delivery_number" },
-  { name: "courierDate", label: "Courier Date", field: "courier_date" },
-  { name: "deliveryDate", label: "Delivery Date", field: "delivery_date" },
+  {
+    name: "mobileNumber",
+    label: "Mobile Number",
+    field: "mobile_number",
+    align: "center",
+  },
+  {
+    name: "nomineeName",
+    label: "Nominee Name",
+    field: "nominee_name",
+    align: "center",
+  },
+  {
+    name: "aadharNumber",
+    label: "Aadhar Number",
+    field: "aadhar_number",
+    align: "center",
+  },
+  { name: "pan", label: "PAN", field: "pan", align: "center" },
+  { name: "city", label: "City", field: "city", align: "center" },
+  { name: "town", label: "Town", field: "town", align: "center" },
+  {
+    name: "district",
+    label: "District",
+    field: "district",
+    sortable: true,
+    align: "center",
+  },
+  {
+    name: "state",
+    label: "State",
+    field: "state",
+    sortable: true,
+    align: "center",
+  },
+  { name: "address", label: "Address", field: "address", align: "center" },
+  { name: "pinCode", label: "Pin Code", field: "pin_code", align: "center" },
+  {
+    name: "nameOfBank",
+    label: "Name of Bank",
+    field: "name_of_bank",
+    align: "center",
+  },
+  {
+    name: "nameAsInBank",
+    label: "Name as in Bank",
+    field: "name_as_in_bank",
+    align: "center",
+  },
+  { name: "ifscCode", label: "IFSC Code", field: "ifsc_code", align: "center" },
+  {
+    name: "bankBranch",
+    label: "Bank Branch",
+    field: "bank_branch",
+    align: "center",
+  },
+  {
+    name: "accountNumber",
+    label: "Account Number",
+    field: "account_number",
+    align: "center",
+  },
+  {
+    name: "referrerId",
+    label: "Referrrer Id",
+    field: "referrer_id",
+    align: "center",
+  },
+  {
+    name: "referrerName",
+    label: "Referrer Name",
+    field: "referrer_name",
+    align: "center",
+  },
+  {
+    name: "orderNumber",
+    label: "Order Number",
+    field: "order_number",
+    align: "center",
+  },
+  {
+    name: "productName",
+    label: "Product Name",
+    field: "product_name",
+    align: "center",
+  },
+  {
+    name: "deliveryThrough",
+    label: "Courier Name",
+    field: "delivery_through",
+    align: "center",
+  },
+  {
+    name: "deliveryNumber",
+    label: "Courier Number",
+    field: "delivery_number",
+    align: "center",
+  },
+  {
+    name: "courierDate",
+    label: "Courier Date",
+    field: "courier_date",
+    align: "center",
+  },
+  {
+    name: "deliveryDate",
+    label: "Delivery Date",
+    field: "delivery_date",
+    align: "center",
+  },
   {
     name: "orderStatus",
     label: "Courier Status",
     field: "order_status",
     sortable: true,
+    align: "center",
   },
-  { name: "paymentDate", label: "Payment Date", field: "payment_date" },
-  { name: "paymentMode", label: "Payment Mode", field: "payment_mode" },
+  {
+    name: "paymentDate",
+    label: "Payment Date",
+    field: "payment_date",
+    align: "center",
+  },
+  {
+    name: "paymentMode",
+    label: "Payment Mode",
+    field: "payment_mode",
+    align: "center",
+  },
   {
     name: "paymentReference",
     label: "Payment Reference",
     field: "payment_reference",
+    align: "center",
   },
   {
     name: "paymentStatus",
     label: "Payment Status",
     field: "payment_status",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelOneCount",
     label: "Level One Count",
     field: "level_one_count",
+    align: "center",
   },
   {
     name: "levelOneCompleted",
     label: "Level One Status",
     field: "level_one_completed",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelOneCompletedDate",
     label: "Level One Completed Date",
     field: "level_one_completed_date",
+    align: "center",
   },
   {
     name: "levelOneCommission",
     label: "Level One Commission",
     field: "level_one_commission_status",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelTwoCount",
     label: "Level Two Count",
     field: "level_two_count",
+    align: "center",
   },
   {
     name: "levelTwoCompleted",
     label: "Level Two Status",
     field: "level_two_completed",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelTwoCompletedDate",
     label: "Level Two Completed Date",
     field: "level_two_completed_date",
+    align: "center",
   },
   {
     name: "levelTwoCommission",
     label: "Level Two Commission",
     field: "level_two_commission_status",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelThreeCount",
     label: "Level Three Count",
     field: "level_three_count",
+    align: "center",
   },
   {
     name: "levelThreeCompleted",
     label: "Level Three Status",
     field: "level_three_completed",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelThreeCompletedDate",
     label: "Level Three Completed Date",
     field: "level_three_completed_date",
+    align: "center",
   },
   {
     name: "levelThreeCommission",
     label: "Level Three Commission",
     field: "level_three_commission_status",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelFourCount",
     label: "Level Four Count",
     field: "level_four_count",
+    align: "center",
   },
   {
     name: "levelFourCompleted",
     label: "Level Four Status",
     field: "level_four_completed",
     sortable: true,
+    align: "center",
   },
   {
     name: "levelFourCompletedDate",
     label: "Level Four Completed Date",
     field: "level_four_completed_date",
+    align: "center",
   },
   {
     name: "levelFourCommission",
     label: "Level Four Commission",
     field: "level_four_commission_status",
     sortable: true,
+    align: "center",
   },
   {
     name: "userStatus",
     label: "User Status",
     field: "user_status",
     sortable: true,
+    align: "center",
   },
 ];
 let registerUsersColumnData = [
@@ -558,6 +701,7 @@ let registerUsersColumnData = [
     field: "referrer_name",
     align: "center",
   },
+  { name: "actions", label: "Actions", field: "", align: "center" },
 ];
 
 const columns = ref(columnsData);
@@ -618,6 +762,30 @@ const closeEditCustomerPopup = (refreshCustomers) => {
     selected.value = [];
     customersList();
   }
+};
+
+const deleteRegisterUser = (registeredUser) => {
+  let payload = {
+    registerUserUid: registeredUser.row.uid,
+  };
+  userStore
+    .deleteRegisteredUser(payload)
+    .then((res) => {
+      registeredUsersList();
+      $q.notify({
+        message: "Registered User Deleted Successfully!!!",
+        type: "positive",
+        position: "top",
+      });
+    })
+    .catch((err) => {
+      $q.notify({
+        message: "Something went Wrong. Please contact your admin!!!",
+        type: "negative",
+        position: "top",
+      });
+    })
+    .finally(() => {});
 };
 
 const registeredUsersList = () => {
@@ -824,4 +992,28 @@ onMounted(() => {
 .customers-table thead {
   color: #123499;
 }
+
+.registered-users-table .q-table__title {
+  color: #1a43bf;
+  font-weight: bold;
+}
+
+.registered-users-table thead {
+  color: #123499;
+}
+</style>
+
+<style lang="sass">
+.registered-users-table
+  thead tr:last-child th:last-child
+    background-color: #00b4ff
+
+  td:last-child
+    background-color: #00b4ff
+
+  th:last-child,
+  td:last-child
+    position: sticky
+    right: 0
+    z-index: 1
 </style>
