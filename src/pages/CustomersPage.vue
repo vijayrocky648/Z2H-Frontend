@@ -874,6 +874,7 @@ const excelExport = () => {
       "Customer Name": row.name,
       "Customer Number": row.customer_number,
       "Date of Birth": row.date_of_birth,
+      "Email Address": row.email_address,
       Gender: row.gender,
       "Plan Name": row.plan,
       "Customer Registration Date": row.plan_start_date,
