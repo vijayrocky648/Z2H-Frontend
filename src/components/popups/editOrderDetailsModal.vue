@@ -138,7 +138,7 @@ const courierDate = ref("");
 const deliveryNumber = ref(props.selectedData[0].delivery_number);
 const customerName = ref(props.selectedData[0].customer_name);
 const deliveryName = ref(props.selectedData[0].delivery_through);
-const deliveryAddress = ref(props.selectedData[0].delivery_address);
+const deliveryAddress = ref("");
 const orderStatus = ref(props.selectedData[0].order_status);
 let orderStatusData = [
   { label: "yet_to_be_couriered", name: "Yet to be Couriered" },
@@ -319,6 +319,10 @@ onMounted(() => {
 
   if (props.selectedData[0].delivery_date) {
     deliveryDate.value = changeDate(props.selectedData[0].delivery_date);
+  }
+
+  if (!props.selectedData[0].delivery_address) {
+    deliveryAddress.value = props.selectedData[0].customer_address;
   }
 
   updateOrderStatusData();

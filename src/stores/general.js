@@ -138,5 +138,12 @@ export const useGeneralStore = defineStore("general", {
         this.productsReturned = res.data;
       });
     },
+
+    getOrdersCsvTemplate(payload) {
+      let url = `/api/z2h/app/download_orders_template/${payload.fromDate}/${payload.toDate}/${payload.orderStatus}/`;
+      return api.get(url, {
+        responseType: 'blob',
+      });
+    },
   }
 })

@@ -58,10 +58,12 @@
         </div>
       </q-btn>
       <q-btn
+        v-if="orderStatus === 'Yet to be Couriered'"
         color="primary"
         class="q-mb-md float-right"
         style="width: 20px"
         no-caps
+        :disable="validateSearch || !rows.length"
         @click="openFileUploadModal = true"
       >
         <custom-tooltip
@@ -74,10 +76,13 @@
         </div>
       </q-btn>
       <q-btn
+        v-if="orderStatus === 'Yet to be Couriered'"
         color="primary"
         class="q-mb-md float-right q-mr-md"
         style="width: 20px"
         no-caps
+        :disable="validateSearch || !rows.length"
+        @click="getOrdersCsvTemplate"
       >
         <custom-tooltip
           :content="fileDownloadTooltipContent"
@@ -173,14 +178,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { useGeneralStore } from "src/stores/general";
 import { exportToExcel } from "src/utils/exportToExcel";
 import { storeToRefs } from "pinia";
-import editOrderDetailsModal from "src/components/popups/editOrderDetailsModal.vue";
-import openOrdersFileUploadModal from "src/components/popups/openOrdersFileUploadModal.vue";
-import customTooltip from "src/components/shared/CustomTooltip.vue";
+import EditOrderDetailsModal from "src/components/popups/editOrderDetailsModal.vue";
+import OpenOrdersFileUploadModal from "src/components/popups/openOrdersFileUploadModal.vue";
+import CustomTooltip from "src/components/shared/CustomTooltip.vue";
 
 // Store Initialization
 const generalStore = useGeneralStore();
@@ -547,6 +552,34 @@ const getSearchData = () => {
   ordersList();
 };
 
+const getOrdersCsvTemplate = () => {
+  showLoader();
+
+  let payload = {
+    fromDate: orderFromDate.value,
+    toDate: orderToDate.value,
+    orderStatus: getOrderStatus.value,
+  };
+
+  generalStore
+    .getOrdersCsvTemplate(payload)
+    .then((res) => {
+      let url = window.URL.createObjectURL(new Blob([res.data]));
+      let link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Yet_To_Be_Couriered_Orders.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    })
+    .catch((err) => {
+      console.log("err", err);
+    })
+    .finally(() => {
+      hideLoader();
+    });
+};
+
 const excelExport = () => {
   showLoader();
   let orderStatusReplacedSpaces = orderStatus.value.replace(/ /g, "_");
@@ -598,11 +631,6 @@ watch(selected, (value) => {
   } else {
     rowsOrderItems.value = [];
   }
-});
-
-// Lifecycle Hooks
-onMounted(() => {
-  ordersList();
 });
 </script>
 

@@ -23,7 +23,7 @@
           <q-file
             outlined
             v-model="ordersFile"
-            accept=".xlsx"
+            accept=".csv"
             label="Upload File"
             class="q-px-lg"
           />
