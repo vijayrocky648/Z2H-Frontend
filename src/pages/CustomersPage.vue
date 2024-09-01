@@ -820,9 +820,18 @@ const customersList = () => {
 
         let dataAdded = {
           ...data,
-          ...orderDetails,
-          ...orderItems,
         };
+        dataAdded.order_number = orderDetails.order_number;
+        dataAdded.delivery_through = orderDetails.delivery_through;
+        dataAdded.delivery_number = orderDetails.delivery_number;
+        dataAdded.courier_date = orderDetails.courier_date;
+        dataAdded.delivery_date = orderDetails.delivery_date;
+        dataAdded.order_status = orderDetails.order_status;
+        dataAdded.payment_date = orderDetails.payment_date;
+        dataAdded.payment_mode = orderDetails.payment_mode;
+        dataAdded.payment_reference = orderDetails.payment_reference;
+        dataAdded.payment_status = orderDetails.payment_status;
+        dataAdded.product_name = orderItems.product_name;
 
         delete dataAdded.order_items;
 
