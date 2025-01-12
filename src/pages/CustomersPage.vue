@@ -63,6 +63,9 @@
         />
       </template>
     </q-table>
+    <div class="q-pa-lg flex flex-center">
+      <q-pagination  v-model="pagination.page" :max="pagination.totalPages" :max-pages="6" @update:model-value="pageSelected" :boundary-numbers="true" :ellipses="true" />
+    </div>
     <q-btn
       class="q-mt-md"
       color="primary"
@@ -731,6 +734,12 @@ const thirdLevelTitle = ref("");
 const fourthLevelTitle = ref("");
 const enableCustomerLevels = ref(false);
 const openEditCustomerPopup = ref(false);
+const pagination = ref({
+  page: 1, // Current page
+  rowsPerPage: 5, // Rows per page
+  rowsNumber: 10, // Total rows (set dynamically)
+  totalPages:30
+})
 const toggleSelectOptions = ref([
   { label: "Customers", value: "customers" },
   { label: "Registered Users", value: "registeredUsers" },
@@ -804,12 +813,18 @@ const registeredUsersList = () => {
     });
 };
 
+const pageSelected = (value)=>{
+  pagination.value.page = value;
+  customersList();
+}
+
 const customersList = () => {
+  let pagingInfo = {page:pagination.value.page,rowsPerPage:pagination.value.rowsPerPage};
   showLoader();
   userStore
-    .getCustomersList()
+    .getCustomersList(pagingInfo)
     .then((res) => {
-      let responseData = res.data;
+      let responseData = res.data?.data;
       let requiredArray = [];
 
       for (let data of responseData) {
@@ -839,7 +854,7 @@ const customersList = () => {
       }
 
       rows.value = requiredArray;
-
+      
       registeredUsersList();
     })
     .catch((err) => {

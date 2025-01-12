@@ -41,9 +41,9 @@ export const useUserStore = defineStore("user", {
       return api.get(url);
     },
 
-    getCustomersList() {
+    getCustomersList(params) {
       let url = '/api/z2h/user/customer/';
-      return api.get(url);
+      return api.get(url, { params });
     },
 
     getCustomerDetails(customerUid) {
