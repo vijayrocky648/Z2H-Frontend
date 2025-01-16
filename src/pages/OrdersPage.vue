@@ -217,6 +217,30 @@ let columnsData = [
     align: "center",
   },
   {
+    name: "city",
+    label: "City",
+    field: "city",
+    align: "center",
+  },
+  {
+    name: "town",
+    label: "Town",
+    field: "town",
+    align: "center",
+  },
+  {
+    name: "pincode",
+    label: "Pincode",
+    field: "pincode",
+    align: "center",
+  },
+  {
+    name: "district",
+    label: "District",
+    field: "district",
+    align: "center",
+  },
+  {
     name: "paymentMode",
     label: "Payment Mode",
     field: "payment_mode",
